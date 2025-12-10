@@ -5,6 +5,9 @@ import pytest
 from selenium.webdriver.common.by import By
 
 from config.config import Config
+from tests.test_logger import get_logger, log_step, log_check, slow_down
+
+logger = get_logger(__name__)
 
 
 RWD_MATRIX = [
@@ -75,6 +78,8 @@ def test_responsive_viewports(case_id, w, h, device, pages, driver):
     """
     ss_dir = _ensure_resp_screenshots_dir()
 
+    log_step(logger, 1, f"Testing {device} viewport {w}x{h}px")
+    
     # set viewport
     try:
         driver.set_window_size(w, h)
@@ -84,21 +89,27 @@ def test_responsive_viewports(case_id, w, h, device, pages, driver):
 
     for p in pages:
         url = Config.BASE_URL.rstrip('/') + p
+        log_step(logger, 2, f"Loading {p or 'homepage'}")
         driver.get(url)
         time.sleep(1)
 
         # screenshot
         fname = ss_dir / f"{case_id}_{w}x{h}_{p.strip('/').replace('/','_') or 'home'}.png"
         try:
+            log_step(logger, 3, f"Capturing screenshot")
             driver.save_screenshot(str(fname))
+            log_check(logger, f"Screenshot saved")
         except Exception:
             pass
 
         # check horizontal scroll
+        log_step(logger, 4, f"Checking for horizontal scroll")
         has_scroll = _has_horizontal_scroll(driver)
         assert not has_scroll, f"Horizontal scroll detected for {case_id} at {w}x{h} on {p}"
+        log_check(logger, f"No horizontal scroll")
 
         # tap targets: ensure at least one primary control has width/height >= 44px
+        log_step(logger, 5, f"Verifying tap targets >= 44px")
         sizes = _largest_tap_target_bounding(driver)
         ok_tap = False
         for s in sizes:
@@ -109,6 +120,7 @@ def test_responsive_viewports(case_id, w, h, device, pages, driver):
             except Exception:
                 continue
         assert ok_tap, f"No tap targets >=44px detected for {case_id} at {w}x{h} on {p}"
+        log_check(logger, f"Tap targets >= 44px found")
 
         # code blocks overflow check for pages where code is expected
         if '/data/api-docs' in p or '/feed' in p:

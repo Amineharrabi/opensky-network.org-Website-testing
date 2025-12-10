@@ -6,6 +6,9 @@ import pytest
 from selenium.webdriver.common.by import By
 
 from config.config import Config
+from tests.test_logger import get_logger, log_step, log_check, slow_down
+
+logger = get_logger(__name__)
 
 
 CB_MATRIX = [
@@ -62,6 +65,7 @@ def test_cb_matrix(cb_id, expected_browser, os_name, path, desc, request, driver
     # Compose URL to test
     url = Config.BASE_URL.rstrip('/') + path
 
+    log_step(logger, 1, f"Loading {url} on {running_browser}")
     driver.get(url)
     time.sleep(1)
 
@@ -69,32 +73,38 @@ def test_cb_matrix(cb_id, expected_browser, os_name, path, desc, request, driver
     ss_dir = _ensure_screenshot_dir()
     fname = ss_dir / f"{cb_id}_{running_browser}.png"
     try:
+        log_step(logger, 2, f"Taking screenshot: {fname.name}")
         driver.save_screenshot(str(fname))
+        log_check(logger, f"Screenshot saved")
     except Exception:
         pass
 
     # Basic DOM sanity: main content or header exists
     try:
+        log_step(logger, 3, "Verifying header element exists")
         el = driver.find_element(By.TAG_NAME, 'header')
+        log_check(logger, "Header found")
     except Exception:
         el = None
     assert el is not None, f"Header not found on {url}"
 
     # Check a primary interactive control is clickable: first nav link
+    log_step(logger, 4, "Testing primary link clickability")
     clickable = False
     try:
         nav_link = driver.find_element(By.CSS_SELECTOR, 'a[href]')
         href = nav_link.get_attribute('href')
         nav_link.click()
         time.sleep(0.8)
-        # after click, either URL changed or still available
         clickable = True
+        log_check(logger, "Primary link is clickable")
     except Exception:
         clickable = False
 
     assert clickable, f"Primary link not clickable on {running_browser} for {cb_id}"
 
     # Try to collect JS console errors where supported
+    log_step(logger, 5, "Checking for JS console errors")
     js_errors = []
     try:
         # Not all drivers support browser log retrieval; do best-effort
@@ -102,6 +112,8 @@ def test_cb_matrix(cb_id, expected_browser, os_name, path, desc, request, driver
         for entry in logs:
             if entry.get('level') in ('SEVERE', 'ERROR'):
                 js_errors.append(entry)
+        if not js_errors:
+            log_check(logger, "No JS console errors found")
     except Exception:
         # ignore if logs not available
         js_errors = []

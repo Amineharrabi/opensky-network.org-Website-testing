@@ -14,11 +14,14 @@ import logging
 # Configure real-time logging
 logging.basicConfig(
     level=logging.INFO,
-    format='[%(asctime)s] [%(levelname)s] %(message)s',
+    format='[%(asctime)s] %(message)s',
     datefmt='%H:%M:%S',
     handlers=[logging.StreamHandler()]  # Always print to console immediately
 )
 logger = logging.getLogger(__name__)
+
+# Track test execution times
+test_start_times = {}
 
 @pytest.fixture(scope="session")
 def driver(request):
@@ -100,8 +103,28 @@ def pytest_addoption(parser):
 
 def pytest_runtest_setup(item):
     """Called before each test runs"""
-    logger.info(f"▶️  Starting test: {item.name}")
+    test_start_times[item.nodeid] = time.time()
+    # Get the function name from the item
+    test_func = item.obj.__name__ if hasattr(item, 'obj') else item.name
+    logger.info(f"\n▶️  {test_func}")
+
+def pytest_runtest_makereport(item, call):
+    """Called after each test phase (setup, call, teardown)"""
+    if call.when == "call":
+        # Calculate duration
+        start_time = test_start_times.get(item.nodeid, time.time())
+        duration = time.time() - start_time
+        
+        # Get the function name
+        test_func = item.obj.__name__ if hasattr(item, 'obj') else item.name
+        
+        # Log based on outcome
+        if call.excinfo:
+            logger.error(f"❌ {test_func} FAILED in {duration:.2f}s")
+        else:
+            logger.info(f"✅ {test_func} passed in {duration:.2f}s")
 
 def pytest_runtest_teardown(item, nextitem):
     """Called after each test completes"""
-    logger.info(f"⏹️  Completed test: {item.name}\n")
+    if item.nodeid in test_start_times:
+        del test_start_times[item.nodeid]

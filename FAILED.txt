@@ -1,0 +1,36 @@
+tests/test_suite_1_functional.py::TestAboutPagesInline::t FAILED [ 16%]
+tests/test_suite_1_functional.py::TestNonFunctionalInlinentent FAILED [ 36%]
+tests/test_suite_1_functional.py::TestNonFunctionalInline_quick FAILED [ 38%]
+tests/test_suite_2_performance.py::TestPerformanceSuite::FAILED [ 47%]
+tests/test_suite_2_performance.py::TestPerformanceSuite::sponse_time FAILED [ 49%]
+tests/test_suite_2_performance.py::TestPerformanceSuite::
+FAILED [ 50%]
+tests/test_suite_3_cross_browser.py::test_cb_matrix[CB-01LED [ 54%]
+tests/test_suite_3_cross_browser.py::test_cb_matrix[CB-02ge (mobile)] FAILED [ 56%]
+tests/test_suite_3_cross_browser.py::TestCrossBrowserSuit_browsers FAILED [ 69%]
+tests/test_suite_3_cross_browser.py::TestCrossBrowserSuitcross_browsers FAILED [ 70%]
+tests/test_suite_3_cross_browser.py::TestCrossBrowserSuit_for_title FAILED [ 71%]
+tests/test_suite_3_cross_browser.py::TestCrossBrowserSuitcy FAILED [ 73%]
+tests/test_suite_4_responsive.py::test_responsive_viewpores0] FAILED [ 76%]
+tests/test_suite_4_responsive.py::test_responsive_viewpors1] FAILED [ 77%]
+tests/test_suite_4_responsive.py::test_responsive_viewpores2] FAILED [ 78%]
+tests/test_suite_4_responsive.py::test_responsive_viewporages3] FAILED [ 80%]
+tests/test_suite_4_responsive.py::test_responsive_viewpord-pages4] FAILED [ 81%]
+tests/test_suite_4_responsive.py::test_responsive_viewporndscape-pages6] FAILED [ 84%]
+tests/test_suite_4_responsive.py::test_responsive_viewporn-pages7] FAILED [ 85%]
+tests/test_suite_4_responsive.py::test_responsive_viewpor0p-pages8] FAILED [ 87%]
+tests/test_suite_4_responsive.py::test_responsive_viewporpages9] FAILED [ 88%]
+tests/test_suite_4_responsive.py::TestResponsiveSuite::te FAILED [ 92%]
+tests/test_suite_4_responsive.py::TestResponsiveSuite::te FAILED [ 94%]
+tests/test_suite_4_responsive.py::TestResponsiveSuite::te] FAILED [ 95%]
+tests/test_suite_4_responsive.py::TestResponsiveSuite::teAILED [ 97%]
+
+================================== FAILURES =============
+_________________ TestHomePages.test_HOME_02_navigation_l
+tests\test_suite_1_functional.py:101: in test_HOME_02_nav
+    assert resp.status_code < 400
+E   assert 403 < 400
+E    +  where 403 = <Response [403]>.status_code
+---------------------------- Captured stdout setup ------
+[DEBUG] Local chromedriver failed (Message: session not criver only supports Chrome version 103
+Current browser version is 142.0.7444.176 with binary pate\Application\chrome.exe; For documentation on this errorenium.dev/documentation/webdriver/troubleshooting/errors#

@@ -10,7 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from config.config import Config
-from tests.test_logger import get_logger, log_step, slow_down
+from tests.test_logger import get_logger, log_step, log_check, slow_down
 
 logger = get_logger(__name__)
 
@@ -74,7 +74,6 @@ def test_perf_01_homepage_cold_load_tti():
     Emulate 4G 70ms RTT, clear cache, load once and measure LCP, TBT, CLS, total transfer size.
     Success criteria captured from user CSV.
     """
-    logger.info("⚡ PERF-01: Testing homepage cold load with 4G emulation")
     driver = _create_chrome(headless=True)
     try:
         _emulate_network(driver, latency_ms=70, download_mbps=12)
