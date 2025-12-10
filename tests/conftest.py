@@ -9,14 +9,26 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from config.config import Config
 import time
 import os
+import logging
 
-@pytest.fixture(scope="function")
+# Configure real-time logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] [%(levelname)s] %(message)s',
+    datefmt='%H:%M:%S',
+    handlers=[logging.StreamHandler()]  # Always print to console immediately
+)
+logger = logging.getLogger(__name__)
+
+@pytest.fixture(scope="session")
 def driver(request):
     browser = request.config.getoption("--browser", default="chrome")
     headless = request.config.getoption("--headless", default=None)
     
     # Override Config.HEADLESS if --headless option is explicitly set
     use_headless = headless if headless is not None else Config.HEADLESS
+    
+    logger.info(f"🔧 Initializing WebDriver: browser={browser}, headless={use_headless}")
     
     if browser == "chrome":
         options = webdriver.ChromeOptions()
@@ -32,16 +44,22 @@ def driver(request):
         chromedriver_path = os.path.join(os.path.dirname(__file__), "chromedriver.exe")
         if os.path.exists(chromedriver_path):
             try:
+                logger.info(f"📍 Attempting to use local chromedriver from {chromedriver_path}")
                 service = ChromeService(chromedriver_path)
                 driver = webdriver.Chrome(service=service, options=options)
+                logger.info("✅ Local chromedriver initialized successfully")
             except Exception as e:
                 # If local chromedriver fails (version mismatch, etc.), fall back to webdriver-manager
-                print(f"[DEBUG] Local chromedriver failed ({e}), falling back to webdriver-manager")
+                logger.warning(f"⚠️  Local chromedriver failed: {e}")
+                logger.info("📥 Falling back to webdriver-manager auto-download")
                 service = ChromeService(ChromeDriverManager().install())
                 driver = webdriver.Chrome(service=service, options=options)
+                logger.info("✅ Auto-downloaded chromedriver initialized successfully")
         else:
+            logger.info("📥 Local chromedriver not found, using webdriver-manager")
             service = ChromeService(ChromeDriverManager().install())
             driver = webdriver.Chrome(service=service, options=options)
+            logger.info("✅ Auto-downloaded chromedriver initialized successfully")
     elif browser == "firefox":
         options = webdriver.FirefoxOptions()
         if Config.HEADLESS:
@@ -58,10 +76,14 @@ def driver(request):
     driver.implicitly_wait(Config.IMPLICIT_WAIT)
     driver.set_page_load_timeout(Config.PAGE_LOAD_TIMEOUT)
     
+    logger.info("🌐 WebDriver ready and waiting for tests")
+    
     yield driver
     
     # Teardown
+    logger.info("🛑 Closing WebDriver at end of session")
     driver.quit()
+    logger.info("✅ WebDriver closed")
 
 @pytest.fixture(scope="function")
 def setup(driver):
@@ -75,3 +97,11 @@ def pytest_addoption(parser):
                     help="Run tests in headless mode (overrides Config.HEADLESS)")
     parser.addoption("--no-headless", dest="headless", action="store_false",
                     help="Run tests with visible browser window (disables headless mode)")
+
+def pytest_runtest_setup(item):
+    """Called before each test runs"""
+    logger.info(f"▶️  Starting test: {item.name}")
+
+def pytest_runtest_teardown(item, nextitem):
+    """Called after each test completes"""
+    logger.info(f"⏹️  Completed test: {item.name}\n")

@@ -4,6 +4,9 @@ import requests
 from selenium.webdriver.common.by import By
 from pages.explorer_page import ExplorerPage
 from config.config import Config
+from tests.test_logger import get_logger, log_step, slow_down
+
+logger = get_logger(__name__)
 
 
 @pytest.mark.functional
@@ -15,12 +18,19 @@ class TestFunctionalSuite:
     def test_01_map_loads_successfully_and_performance(self, setup):
         """TC01: Load the public flight map and measure that main map canvas appears quickly."""
         driver = setup
+        logger.info("🗺️  TC01: Testing map load and performance")
+        log_step(logger, 1, "Navigating to flight map")
         driver.get(self.MAP_URL)
+        slow_down(0.5)
         explorer_page = ExplorerPage(driver)
 
+        log_step(logger, 2, "Checking if map canvas is visible")
         assert explorer_page.is_map_visible(), "Map canvas did not become visible within timeout"
+        logger.info("  ├─ ✅ Map canvas is visible")
+        slow_down(0.5)
 
         # measure page load time (best-effort). If instrumentation not available, get_page_load_time may return 0
+        log_step(logger, 3, "Measuring page load time")
         try:
             load_time = explorer_page.get_page_load_time()
         except Exception:
@@ -28,29 +38,53 @@ class TestFunctionalSuite:
 
         if load_time is not None:
             assert load_time <= Config.MAP_LOAD_THRESHOLD, f"Map loaded too slowly: {load_time}s"
+            logger.info(f"  ├─ ✅ Page load time: {load_time}s (threshold: {Config.MAP_LOAD_THRESHOLD}s)")
 
     def test_02_search_input_and_table_presence(self, setup):
         """TC02: Verify the map's search input and planes table DOM elements are present and usable."""
         driver = setup
+        logger.info("🔍 TC02: Testing search input and table presence")
+        log_step(logger, 1, "Navigating to map")
+        driver.get(self.MAP_URL)
+        slow_down(0.5)
+        explorer_page = ExplorerPage(driver)
+
+        log_step(logger, 2, "Checking search input presence")
+        search_input = explorer_page.find_element(By.ID, "search_input")
+        assert search_input is not None
+        logger.info("  ├─ ✅ Search input found")
+        slow_down(0.3)
         driver.get(self.MAP_URL)
         explorer_page = ExplorerPage(driver)
 
         # Ensure search input exists
         assert explorer_page.is_element_visible(explorer_page.SEARCH_INPUT), "Search input not visible"
+        logger.info("  ├─ ✅ Search input is visible")
+        slow_down(0.3)
 
         # Enter a short search term and ensure the table element exists (dynamic rows may not be present in every run)
+        log_step(logger, 4, "Testing flight search")
         explorer_page.search_for_flight("AAL")
+        slow_down(0.5)
         assert explorer_page.is_element_visible(explorer_page.FLIGHT_TABLE), "Planes table element not present"
+        logger.info("  ├─ ✅ Planes table is visible after search")
 
     def test_03_map_controls_present(self, setup):
         """TC03: Verify key map controls (Home, Follow, Random) and sidebar toggle exist."""
         driver = setup
+        logger.info("🎮 TC03: Testing map controls")
+        log_step(logger, 1, "Navigating to map")
         driver.get(self.MAP_URL)
+        slow_down(0.5)
         explorer_page = ExplorerPage(driver)
 
+        log_step(logger, 2, "Checking map controls")
         controls = [("H", "Home button"), ("F", "Follow button"), ("R", "Random follow button"), ("toggle_sidebar_button", "Sidebar toggle")]
         for ctrl_id, desc in controls:
-            assert explorer_page.is_element_visible((By.ID, ctrl_id)), f"{desc} ({ctrl_id}) not visible"
+            visible = explorer_page.is_element_visible((By.ID, ctrl_id))
+            assert visible, f"{desc} ({ctrl_id}) not visible"
+            logger.info(f"  ├─ ✅ {desc} found")
+            slow_down(0.2)
 
     def test_04_home_page_has_flight_map_link(self, setup):
         """TC04: From the main site home page, verify the Flight Map link points to the map.opensky-network.org domain."""

@@ -10,6 +10,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from config.config import Config
+from tests.test_logger import get_logger, log_step, slow_down
+
+logger = get_logger(__name__)
 
 
 def _create_chrome(headless=True):
@@ -71,6 +74,7 @@ def test_perf_01_homepage_cold_load_tti():
     Emulate 4G 70ms RTT, clear cache, load once and measure LCP, TBT, CLS, total transfer size.
     Success criteria captured from user CSV.
     """
+    logger.info("⚡ PERF-01: Testing homepage cold load with 4G emulation")
     driver = _create_chrome(headless=True)
     try:
         _emulate_network(driver, latency_ms=70, download_mbps=12)
@@ -82,6 +86,7 @@ def test_perf_01_homepage_cold_load_tti():
             pass
 
         start = time.time()
+        logger.info("  ├─ Loading homepage with 4G throttling...")
         driver.get(Config.BASE_URL)
         # wait a bit for observers to record
         time.sleep(2)
@@ -94,13 +99,21 @@ def test_perf_01_homepage_cold_load_tti():
         cls = metrics.get('cls', 0)
         total_kb = metrics.get('transferSize', 0) / 1024.0
 
+        logger.info(f"  ├─ Measured: Load {load_time:.2f}s, LCP {lcp:.2f}s, TBT {tbt:.2f}s, CLS {cls:.3f}, {total_kb:.0f}KB")
+        slow_down(0.5)
+
         # Assertions approximating criteria
         assert lcp <= 2.2, f"LCP too high: {lcp}s"
+        logger.info(f"  ├─ ✅ LCP OK: {lcp:.2f}s ≤ 2.2s")
         # we don't have a true TTI easily; use load_time as proxy but allow up to 2.8
         assert load_time <= 2.8, f"Load time (proxy TTI) too high: {load_time}s"
+        logger.info(f"  ├─ ✅ Load time OK: {load_time:.2f}s ≤ 2.8s")
         assert tbt <= 0.1, f"TBT too high: {tbt}s"
+        logger.info(f"  ├─ ✅ TBT OK: {tbt:.2f}s ≤ 0.1s")
         assert cls <= 0.1, f"CLS too high: {cls}"
+        logger.info(f"  ├─ ✅ CLS OK: {cls:.3f} ≤ 0.1")
         assert total_kb <= 1800.0, f"Total transfer > 1.8MB: {total_kb}KB"
+        logger.info(f"  ├─ ✅ Transfer OK: {total_kb:.0f}KB ≤ 1800KB")
     finally:
         driver.quit()
 
