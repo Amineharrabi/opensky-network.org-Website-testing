@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+    <!-- You can pass parameters from your templates to your main template and insert them -->
+    <title>OpenSky</title>
+            <script type="module" src="/static/bundle/main-CAOMLZIL.js"></script>
+      <link rel="stylesheet" href="/static/bundle/main-DXAOGTVR.css" />
+ <!-- Automatically loads Bootstrap, JS or anyother imports in web/app/index.js-->
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- FULL-WIDTH NAVBAR -->
+<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top py-3 px-4 px-md-5" data-controller="header">
+    <div class="container-fluid">
+        <!-- OSN Logo -->
+        <a href="/" class="navbar-brand" data-bs-toggle="tooltip" data-bs-placement="top" title="Return to OpenSky Home">
+            <img
+                    src="/static/osky-logo-banner.png"
+                    alt="Your Logo"
+                    class="img-fluid"
+                    style="max-width: 250px; height: auto"
+            />
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Return to OpenSky Home">
+                    <a href="/" class="nav-link px-3 link-dark fw-bold">Home</a>
+                </li>
+
+                <!-- About Dropdown -->
+                <li class="nav-item dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Learn how to feed data to OpenSky">
+                    <a
+                            class="nav-link dropdown-toggle px-3 link-dark fw-bold"
+                            href="#"
+                            id="aboutDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+                        Feed Data
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="feedDatadown">
+                        <li><a class="dropdown-item fw-bold" href="/feed">Feed Data</a></li>
+                        <li><a class="dropdown-item" href="/feed/raspberry">Raspberry Pi</a></li>
+                        <li><a class="dropdown-item" href="/feed/debian">Debian - GNU Linux</a></li>
+                        <li><a class="dropdown-item" href="/feed/docker">Docker</a></li>
+                        <li><a class="dropdown-item" href="/feed/radarcape">Radarcape</a></li>
+                        <li><a class="dropdown-item" href="/feed/flarm">FLARM</a></li>
+                        <li><a class="dropdown-item" href="/feed/vhf">VHF Voice Data</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Learn about the data we collect and provide">
+                    <a
+                            class="nav-link dropdown-toggle px-3 link-dark fw-bold"
+                            href="#"
+                            id="accessDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+                        Our Data
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="feedDatadown">
+                        <li><a class="dropdown-item fw-bold" href="/data">Our Data</a></li>
+                        <li><a class="dropdown-item" href="/data/trino">Historical Database - Trino</a></li>
+                        <li><a class="dropdown-item" href="/data/api">OpenSky API</a></li>
+                        <li><a class="dropdown-item" href="/data/scientific">Scientific Datasets</a></li>
+                        <li><a class="dropdown-item" href="/data/tools">Data Tools</a></li>
+                        <li><a class="dropdown-item" href="/data/aircraft">Aircraft Database</a></li>
+                        <li><a class="dropdown-item" href="/data/alerts">Alerts</a></li>
+                    </ul>
+                </li>
+
+                <!-- About Dropdown -->
+                <li class="nav-item dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Learn about OpenSky">
+                    <a
+                            class="nav-link dropdown-toggle px-3 link-dark fw-bold"
+                            href="#"
+                            id="aboutDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+
+
+                    >
+                        About
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                        <li><a class="dropdown-item fw-bold" href="/about">About</a></li>
+                        <li><a class="dropdown-item" href="/about/faq">FAQ</a></li>
+                        <li><a class="dropdown-item" href="/about/network">Network Coverage</a></li>
+                        <li><a class="dropdown-item" href="/about/social-impact">Social Impact</a></li>
+                        <li><a class="dropdown-item" href="/about/terms-of-use">Terms Of Use</a></li>
+                        <li><a class="dropdown-item" href="/about/privacy-policy">Privacy Policy</a></li>
+                        <li><a target="_blank" class="dropdown-item" href="https://symposium.opensky-network.org/">OpenSky Symposium</a></li>
+                        <li><a class="dropdown-item" href="/about/publications">Publications</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item">
+                    <a target="_blank" href="https://map.opensky-network.org/"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="View our Tar1090 Flight map"
+                       class="nav-link px-3 link-dark fw-bold">Flight Map</a>
+                </li>
+
+
+                <!-- MyOpenSky Dropdown -->
+                    <li class="nav-item dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Go to Account section">
+                        <a
+                                class="nav-link dropdown-toggle px-3 link-dark fw-bold"
+                                href="#"
+                                id="aboutDropdown"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                        >
+                            Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                            <li><a class="dropdown-item fw-bold" href="/my-opensky/account">Account</a></li>
+                            <li><a class="dropdown-item" href="/my-opensky/request-data">Request Data Access</a></li>
+                            <li><a class="dropdown-item" href="/my-opensky/sensors/register">Register a Sensor</a></li>
+                            <li><a class="dropdown-item" href="/my-opensky/sensors/view-sensors">View Sensors</a></li>
+                        </ul>
+                    </li>
+
+
+                <!-- MyOpenSky Dropdown -->
+
+                <!-- Only visible on mobile d-md-none is what causes this-->
+                <li class="nav-item d-md-none text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Join our Discord Server">
+                    <a href="https://discord.gg/RPh89jpVVz" target="_blank" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                            <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
+                        </svg>
+                    </a>
+                </li>
+
+                    <li class="nav-item d-md-none text-center">
+                        <a href="/logout" class="btn btn-outline-dark fw-bold w-75">Log out</a>
+                    </li>
+
+            </ul>
+        </div>
+
+        <!-- Right-side buttons (Only visible on larger screens) -->
+        <div class="d-none d-md-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Join our Discord Server">
+                <a href="https://discord.gg/RPh89jpVVz" target="_blank" class="me-3 text-dark" style="text-decoration: none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                    <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
+                </svg>
+            </a>
+                <a href="/logout" class="btn btn-outline-dark me-2 fw-bold">Log out</a>
+        </div>
+    </div>
+</nav>
+ <!-- Reusable Header -->
+<main class="flex-grow-1">
+            <div class="container mt-5 mb-5">
+            <div class="container mt-5 mb-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page">Account</li>
+                        <li class="breadcrumb-item"><a href="/my-opensky/request-data">Request Data Access</a></li>
+                        <li class="breadcrumb-item"><a href="/my-opensky/sensors/register">Register a Sensor</a></li>
+                        <li class="breadcrumb-item"><a href="/my-opensky/sensors/view-sensors">View Sensors</a></li>
+
+                    </ol>
+                </nav>
+            </div>
+            <h1 class="text-center text-secondary-emphasis-emphasis">Account</h1>
+
+
+            <div class="alert alert-warning text-center" role="alert">
+
+                <h5 class="fw-medium">🔑 New API authentication/authorization</h5>
+                <ul class="list-unstyled ms-4">
+                    <li>🔹 <strong>We are moving away from basic auth</strong> – Basic auth will only be supported for a couple more months; however, no exact end date has been set.
+                    </li>
+                    <li>🔹 <strong>API Client</strong> – Users are encouraged to start using their API client now!
+                    </li>
+                    <li>🔹 <strong>Activating the API Client</strong> – Follow the instructions in the <a target="_blank" href="https://openskynetwork.github.io/opensky-api/rest.html">API docs</a>. Search for <em>OAuth2 Client Credentials Flow</em>
+                    </li>
+                </ul>
+            </div>
+
+                        <div class="alert alert-warning text-center" role="alert">
+
+                <h5 class="fw-medium">⚠️ Important Notes</h5>
+                <ul class="list-unstyled ms-4">
+                    <li>🔹 <strong>The roles in the User Info box below do not reflect your Trino account status currently.</strong> – Trino access is granted and confirmed directly by the administrators.
+                    </li>
+                    <li>🔹 <strong>API Client ≠ Trino</strong> – These are separate, unrelated interfaces! For Trino follow the <a href="/data/trino">directions in the tutorial</a> and use user/password and the website login.
+                    </li>
+                </ul>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <!-- User Info Card -->
+                <div class="col-md-5 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-person"></i> User Info</h5>
+                            <ul class="list-unstyled">
+                                <li><strong>Username:</strong> amineharrabi</li>
+                                <li><strong>Name:</strong> amine harrabi</li>
+                                <li><strong>Email:</strong> amineiiiiharrabi@gmail.com</li>
+                                <li><strong>Roles:</strong>
+                                    <ul>
+                                            <li>opensky_website_user</li>
+                                            <li>offline_access</li>
+                                            <li>uma_authorization</li>
+                                            <li>default-roles-opensky-network</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                    <!-- API Client Card -->
+<div class="col-md-5 mb-4 api-card-wrapper" data-controller="api-client-controller"
+     data-api-client-controller-csrf-header-value="X-CSRF-TOKEN"
+     data-api-client-controller-csrf-token-value="sRiCXs1xfCHK2ZgfdJdwrA">
+    <div class="card h-100 shadow-sm api-client-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="bi bi-key"></i> API Client
+            </h5>
+
+            <div class="mb-4">
+                    <div class="card-text" data-api-client-controller-target="clientId"></div>
+            </div>
+
+            <div class="mb-4">
+
+
+                    <div class="card-text" data-api-client-controller-target="roles"></div>
+            </div>
+
+            <div class="position-absolute start-50 translate-middle-x" style="bottom: 10%;">
+                <div data-api-client-controller-target="wrapper">
+
+                        <button
+                                type="button"
+                                class="btn btn-outline-success btn-sm"
+                                data-action="click->api-client-controller#handleCreate"
+                                data-api-client-controller-target="button">
+                            <i class="bi bi-download"></i> Create &amp; Download Credential
+                        </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+ <!-- Dynamic page content eg add index.html-->
+</main>
+    <!-- Footer -->
+<footer class="footer bg-dark text-white py-4" data-controller="footer">
+    <div class="container">
+        <div
+                class="d-flex flex-wrap align-items-center justify-content-between"
+        >
+            <!-- Logo -->
+            <div class="col-md-3 text-center text-md-start" class="navbar-brand" data-bs-toggle="tooltip"
+                 data-bs-placement="top" title="Return to OpenSky Home">
+                <a href="/" class="d-inline-flex text-decoration-none">
+                    <img
+                            src="/static/osky-logo-banner.png"
+                            alt="OpenSky Logo"
+                            class="img-fluid"
+                            style="max-width: 250px; height: auto"
+                    />
+                </a>
+            </div>
+
+            <!-- Footer Navigation -->
+            <ul class="nav col-12 col-md-auto justify-content-center">
+                <li>
+                    <a href="/" class="nav-link px-2 text-white fw-bold" class="navbar-brand"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="Return to OpenSky Home">Home</a>
+                </li>
+                <li>
+                    <a href="/feed" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Learn how to feed data to OpenSky">Feed Data</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Learn about the data we collect and provide"
+                    >Our Data</a
+                    >
+                </li>
+                <li>
+                    <a href="/about" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Learn about OpenSky">About</a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://map.opensky-network.org/"
+                       class="nav-link px-2 text-white fw-bold"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="View our Tar1090 Flight map"
+                    >Flight Map</a
+                    >
+                </li>
+            </ul>
+
+            <!-- Social Icons & Login (Desktop) -->
+            <div
+                    class="col-md-3 d-flex align-items-center justify-content-end d-none d-md-flex"
+            >
+                <a
+                        href="https://discord.gg/RPh89jpVVz"
+                        target="_blank"
+                        class="me-4 text-white"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Join our Discord Server"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-discord" viewBox="0 0 16 16">
+                        <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
+                    </svg>
+                </a>
+
+                    <a href="/logout" class="btn btn-outline-light me-2 fw-bold">Log out</a>
+            </div>
+
+            <!-- Social Icons & Login (Mobile) -->
+            <div class="col-12 text-center mt-4 d-md-none">
+                <a
+                        target="_blank" href="https://discord.gg/RPh89jpVVz"
+                        class="text-white d-block mb-2"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Join our Discord Server"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-discord" viewBox="0 0 16 16">
+                        <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
+                    </svg>
+                </a>
+
+                    <a href="/logout" class="btn btn-outline-light me-2 fw-bold">Log out</a>
+            </div>
+        </div>
+    </div>
+</footer>
+ <!-- Reusable Footer -->
+</body>
+</html>

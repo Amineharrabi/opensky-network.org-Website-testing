@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html class="login-pf">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="robots" content="noindex, nofollow">
+
+            <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Sign in to Opensky Network</title>
+    <link rel="icon" href="/auth/resources/as1p7/login/opensky/img/favicon.ico" />
+            <link href="/auth/resources/as1p7/common/keycloak/web_modules/@patternfly/react-core/dist/styles/base.css" rel="stylesheet" />
+            <link href="/auth/resources/as1p7/common/keycloak/web_modules/@patternfly/react-core/dist/styles/app.css" rel="stylesheet" />
+            <link href="/auth/resources/as1p7/common/keycloak/node_modules/patternfly/dist/css/patternfly.min.css" rel="stylesheet" />
+            <link href="/auth/resources/as1p7/common/keycloak/node_modules/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet" />
+            <link href="/auth/resources/as1p7/common/keycloak/lib/pficon/pficon.css" rel="stylesheet" />
+            <link href="/auth/resources/as1p7/login/opensky/css/login.css" rel="stylesheet" />
+            <link href="/auth/resources/as1p7/login/opensky/css/tile.css" rel="stylesheet" />
+            <link href="/auth/resources/as1p7/login/opensky/css/custom.css" rel="stylesheet" />
+            <script src="https://www.recaptcha.net/recaptcha/api.js?hl=en" type="text/javascript"></script>
+<SCRIPT> if (typeof history.replaceState === 'function') {  history.replaceState({}, "some title", "https://auth.opensky-network.org/auth/realms/opensky-network/login-actions/registration?execution=dde20d3d-652b-455b-81bd-f75e006d70ba&client_id=website-ui&tab_id=SNszA-AE-IQ"); }</SCRIPT></head>
+
+<body class="">
+<div class="login-pf-page">
+    <div id="kc-header" class="login-pf-page-header">
+        <div id="kc-header-wrapper"
+             class="">Opensky Network</div>
+    </div>
+    <div class="card-pf card-pf-custom">
+        <header class="login-pf-header">
+                <h1 id="kc-page-title">        Register
+</h1>
+      </header>
+      <div id="kc-content">
+        <div id="kc-content-wrapper">
+
+
+        <form id="kc-register-form" class="form-horizontal" action="https://auth.opensky-network.org/auth/realms/opensky-network/login-actions/registration?session_code=9Tbc-0YJWrNdpd5MeW0F1wqcOGulryCojvv3QiWLIPk&amp;execution=dde20d3d-652b-455b-81bd-f75e006d70ba&amp;client_id=website-ui&amp;tab_id=SNszA-AE-IQ" method="post">
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="firstName" class="pf-c-form__label pf-c-form__label-text">First name</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <input type="text" id="firstName" class="pf-c-form-control" name="firstName"
+                           value=""
+                           aria-invalid=""
+                    />
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="lastName" class="pf-c-form__label pf-c-form__label-text">Last name</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <input type="text" id="lastName" class="pf-c-form-control" name="lastName"
+                           value=""
+                           aria-invalid=""
+                    />
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="email" class="pf-c-form__label pf-c-form__label-text">Email</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <input type="text" id="email" class="pf-c-form-control" name="email"
+                           value="" autocomplete="email"
+                           aria-invalid=""
+                    />
+
+                </div>
+            </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label for="username" class="pf-c-form__label pf-c-form__label-text">Username</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="text" id="username" class="pf-c-form-control" name="username"
+                               value="" autocomplete="username"
+                               aria-invalid=""
+                        />
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label for="password" class="pf-c-form__label pf-c-form__label-text">Password</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="password" id="password" class="pf-c-form-control" name="password"
+                               autocomplete="new-password"
+                               aria-invalid=""
+                        />
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label for="password-confirm"
+                               class="pf-c-form__label pf-c-form__label-text">Confirm password</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="password" id="password-confirm" class="pf-c-form-control"
+                               name="password-confirm"
+                               aria-invalid=""
+                        />
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="g-recaptcha" data-size="compact" data-sitekey="6LeBm7keAAAAAJ9CZdg98xysDX1drP51nxRqIWn3"></div>
+                    </div>
+                </div>
+
+            <div class="form-group">
+                <div id="kc-form-options" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="">
+                        <span><a href="/auth/realms/opensky-network/login-actions/authenticate?client_id=website-ui&amp;tab_id=SNszA-AE-IQ">« Back to Login</a></span>
+                    </div>
+                </div>
+
+                <div id="kc-form-buttons" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <input class="pf-c-button pf-m-primary pf-m-primary-custom pf-m-block btn-lg" type="submit" value="Register"/>
+                </div>
+            </div>
+        </form>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
