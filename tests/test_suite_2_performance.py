@@ -40,12 +40,10 @@ def _emulate_network(driver, latency_ms=70, download_mbps=12, upload_mbps=3):
             "uploadThroughput": upload_bps,
         })
     except Exception:
-        # best-effort; continue without throttling if CDP unavailable
         return
 
 
 def _collect_performance_metrics(driver):
-    # Collect LCP, CLS, long tasks, and resource sizes via the browser Performance APIs
     script = """
     (function(){
       function sum(arr, key){return arr.reduce((s,i)=>s+(i[key]||0),0)}

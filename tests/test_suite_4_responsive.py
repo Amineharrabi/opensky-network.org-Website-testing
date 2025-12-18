@@ -2,10 +2,9 @@ import time
 from pathlib import Path
 
 import pytest
-from selenium.webdriver.common.by import By
 
 from config.config import Config
-from tests.test_logger import get_logger, log_step, log_check, slow_down
+from tests.test_logger import get_logger, log_step, log_check
 
 logger = get_logger(__name__)
 
@@ -149,82 +148,3 @@ def test_responsive_viewports(case_id, w, h, device, pages, driver):
             except Exception:
                 # not all drivers support CDP for emulation; skip strict failure
                 pass
-"""
-FILE: tests/test_suite_4_responsive.py
-
-Test Suite 4: Responsive Design Testing
-Tests the application's responsiveness across different screen resolutions
-and devices (mobile, tablet, desktop, wide screen)
-
-Testing Techniques Used:
-- Configuration Testing: Different screen sizes/resolutions
-- Compatibility Testing: Various device viewports
-- Visual Regression: Layout verification
-"""
-
-import pytest
-import time
-from pages.explorer_page import ExplorerPage
-from config.config import Config
-
-
-@pytest.mark.responsive
-class TestResponsiveSuite:
-    """
-    Responsive design tests for the OpenSky Network website.
-    """
-
-    @pytest.mark.parametrize("resolution_name", ["mobile", "tablet", "desktop"])
-    def test_19_responsive_layout(self, setup, resolution_name):
-        """TC19-21: Verify layout is responsive and has no horizontal scroll."""
-        width, height = Config.RESOLUTIONS[resolution_name]
-        driver = setup
-        driver.set_window_size(width, height)
-        time.sleep(2)
-        explorer_page = ExplorerPage(driver)
-        assert explorer_page.is_map_visible(), f"Map is not visible at {width}x{height}."
-        body_width = driver.execute_script("return document.body.scrollWidth")
-        window_width = driver.execute_script("return window.innerWidth")
-        assert body_width <= window_width + 20, f"Horizontal scroll at {width}x{height}."
-
-    def test_22_mobile_element_stacking(self, setup):
-        """TC22: Verify that on a mobile layout, elements are stacked vertically."""
-        driver = setup
-        width, height = Config.RESOLUTIONS['mobile']
-        driver.set_window_size(width, height)
-        time.sleep(2)
-        explorer_page = ExplorerPage(driver)
-        search_input = explorer_page.find_element(explorer_page.SEARCH_INPUT)
-        flight_table = explorer_page.find_element(explorer_page.FLIGHT_TABLE)
-        assert search_input.location['y'] < flight_table.location['y'], "Elements not stacked on mobile."
-
-    def test_23_tablet_panel_visibility(self, setup):
-        """TC23: Verify flight details panel is correctly displayed on tablet."""
-        driver = setup
-        width, height = Config.RESOLUTIONS['tablet']
-        driver.set_window_size(width, height)
-        time.sleep(2)
-        explorer_page = ExplorerPage(driver)
-        callsign = "SWR100"
-        explorer_page.search_for_flight(callsign)
-        if explorer_page.select_flight_from_table_by_callsign(callsign):
-            assert explorer_page.is_flight_details_panel_visible(), "Details panel not visible on tablet."
-            panel_width = explorer_page.find_element(explorer_page.FLIGHT_DETAILS_PANEL).size['width']
-            assert panel_width < width, "Details panel is too wide on tablet."
-        else:
-            pytest.skip(f"Flight {callsign} not found. Skipping test.")
-
-    def test_24_mobile_landscape_orientation(self, setup):
-        """TC24: Verify layout in mobile landscape mode."""
-        driver = setup
-        width, height = Config.RESOLUTIONS['mobile']
-        driver.set_window_size(height, width) # Swap for landscape
-        time.sleep(2)
-        body_width = driver.execute_script("return document.body.scrollWidth")
-        window_width = driver.execute_script("return window.innerWidth")
-        assert body_width <= window_width + 20, f"Horizontal scroll in landscape mode."
-
-
-if __name__ == "__main__":
-    # Run this suite independently
-    pytest.main([__file__, "-v", "-s"])
