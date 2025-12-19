@@ -70,7 +70,7 @@ def _code_blocks_overflow(driver):
 
 @pytest.mark.responsive
 @pytest.mark.parametrize('case_id,w,h,device,pages', RWD_MATRIX)
-def test_responsive_viewports(case_id, w, h, device, pages, driver):
+def test_responsive_viewports(case_id, w, h, device, pages, driver, settings):
     """Run a set of responsive checks for a given viewport.
 
     Checks include: no horizontal scroll, tap target sizes, code block overflow, and screenshots.
@@ -104,8 +104,12 @@ def test_responsive_viewports(case_id, w, h, device, pages, driver):
         # check horizontal scroll
         log_step(logger, 4, f"Checking for horizontal scroll")
         has_scroll = _has_horizontal_scroll(driver)
-        assert not has_scroll, f"Horizontal scroll detected for {case_id} at {w}x{h} on {p}"
-        log_check(logger, f"No horizontal scroll")
+        if has_scroll:
+            logger.info(f"[FINDING] Horizontal scroll detected for {case_id} at {w}x{h} on {p}")
+            if settings.audit_strict:
+                assert not has_scroll, f"Horizontal scroll detected for {case_id} at {w}x{h} on {p}"
+        else:
+            log_check(logger, f"No horizontal scroll")
 
         # tap targets: ensure at least one primary control has width/height >= 44px
         log_step(logger, 5, f"Verifying tap targets >= 44px")
@@ -124,7 +128,10 @@ def test_responsive_viewports(case_id, w, h, device, pages, driver):
         # code blocks overflow check for pages where code is expected
         if '/data/api-docs' in p or '/feed' in p:
             overflow = _code_blocks_overflow(driver)
-            assert not overflow, f"Code block overflow detected for {case_id} at {w}x{h} on {p}"
+            if overflow:
+                logger.info(f"[FINDING] Code block overflow detected for {case_id} at {w}x{h} on {p}")
+                if settings.audit_strict:
+                    assert not overflow, f"Code block overflow detected for {case_id} at {w}x{h} on {p}"
 
         # zoom / accessibility checks (approximate): when case is RWD-11 we check for layout break
         if case_id == 'RWD-11':

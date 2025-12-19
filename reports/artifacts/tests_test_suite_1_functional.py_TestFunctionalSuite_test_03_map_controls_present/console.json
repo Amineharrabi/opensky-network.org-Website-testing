@@ -1,0 +1,200 @@
+[
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2001:16 \"22:07:48 clear timers\"",
+    "source": "console-api",
+    "timestamp": 1766092068519
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:07:48 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092068519
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/libs/zstddec-tar1090-0.0.5.js 19:16 \"zstddec: wasm memory size increased to: 2097152\"",
+    "source": "console-api",
+    "timestamp": 1766092069923
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2455:12 \"webglInit: 2.10400390625 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092070015
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:07:50 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092070045
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2240:12 \"Page Load: 248.37890625 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092070045
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ 1110 [GroupMarkerNotSet(crbug.com/242999)!:A8704E021C430000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader (about:flags#enable-unsafe-swiftshader) flag to opt in to lower security guarantees for trusted content.",
+    "source": "rendering",
+    "timestamp": 1766092070161
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 458:43 \"first fetch(): 135.995849609375 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092070203
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6801:16 \"Locating\u2026\"",
+    "source": "console-api",
+    "timestamp": 1766092070234
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 528:16 \"afterFirstFetch(): 2.51708984375 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092070234
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6763:16 \"Location from browser: 36.8279552, 10.2039552\"",
+    "source": "console-api",
+    "timestamp": 1766092070883
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2001:16 \"22:07:51 clear timers\"",
+    "source": "console-api",
+    "timestamp": 1766092071255
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:07:51 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092071255
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/libs/zstddec-tar1090-0.0.5.js 19:16 \"zstddec: wasm memory size increased to: 2097152\"",
+    "source": "console-api",
+    "timestamp": 1766092071607
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2455:12 \"webglInit: 1.10498046875 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092071648
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:07:51 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092071657
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2240:12 \"Page Load: 142.800048828125 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092071658
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ 1110 [GroupMarkerNotSet(crbug.com/242999)!:A8704E021C430000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader (about:flags#enable-unsafe-swiftshader) flag to opt in to lower security guarantees for trusted content.",
+    "source": "rendering",
+    "timestamp": 1766092071750
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6801:16 \"Locating\u2026\"",
+    "source": "console-api",
+    "timestamp": 1766092071807
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 528:16 \"afterFirstFetch(): 2.06982421875 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092071807
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 458:43 \"first fetch(): 173.005859375 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092071835
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6763:16 \"Location from browser: 36.8279552, 10.2039552\"",
+    "source": "console-api",
+    "timestamp": 1766092071847
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2001:16 \"22:07:55 clear timers\"",
+    "source": "console-api",
+    "timestamp": 1766092075026
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:07:55 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092075026
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/libs/zstddec-tar1090-0.0.5.js 19:16 \"zstddec: wasm memory size increased to: 2097152\"",
+    "source": "console-api",
+    "timestamp": 1766092075973
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2455:12 \"webglInit: 1.89794921875 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092076100
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:07:56 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092076110
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2240:12 \"Page Load: 218.49609375 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092076111
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ 1110 [GroupMarkerNotSet(crbug.com/242999)!:A8A04E021C430000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader (about:flags#enable-unsafe-swiftshader) flag to opt in to lower security guarantees for trusted content.",
+    "source": "rendering",
+    "timestamp": 1766092076197
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6801:16 \"Locating\u2026\"",
+    "source": "console-api",
+    "timestamp": 1766092076263
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 528:16 \"afterFirstFetch(): 2.52490234375 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092076263
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6763:16 \"Location from browser: 36.8279552, 10.2039552\"",
+    "source": "console-api",
+    "timestamp": 1766092076267
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 458:43 \"first fetch(): 197.467041015625 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092076776
+  }
+]

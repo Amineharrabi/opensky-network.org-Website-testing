@@ -1,0 +1,104 @@
+[
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/js/recaptcha.js 7:20 \"reCAPTCHA script loaded.\"",
+    "source": "console-api",
+    "timestamp": 1766092060416
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ - [GroupMarkerNotSet(crbug.com/242999)!:A8404E021C430000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader (about:flags#enable-unsafe-swiftshader) flag to opt in to lower security guarantees for trusted content.",
+    "source": "rendering",
+    "timestamp": 1766092064357
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/js/recaptcha.js 35:20 \"reCAPTCHA verification result:\" Object",
+    "source": "console-api",
+    "timestamp": 1766092064826
+  },
+  {
+    "level": "SEVERE",
+    "message": "https://map.opensky-network.org/place_holder - Failed to load resource: the server responded with a status of 404 ()",
+    "source": "network",
+    "timestamp": 1766092065241
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2455:12 \"webglInit: 142.490966796875 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092066849
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ - [GroupMarkerNotSet(crbug.com/242999)!:A8404E021C430000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader (about:flags#enable-unsafe-swiftshader) flag to opt in to lower security guarantees for trusted content.",
+    "source": "rendering",
+    "timestamp": 1766092067036
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ - [.WebGL-0x129404afe900]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "source": "rendering",
+    "timestamp": 1766092067042
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/libs/zstddec-tar1090-0.0.5.js 19:16 \"zstddec: wasm memory size increased to: 2097152\"",
+    "source": "console-api",
+    "timestamp": 1766092067053
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:07:47 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092067055
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2240:12 \"Page Load: 559.875 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092067056
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ - [.WebGL-0x129404afe900]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "source": "rendering",
+    "timestamp": 1766092067088
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ - [.WebGL-0x129404afe900]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "source": "rendering",
+    "timestamp": 1766092067137
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6801:16 \"Locating\u2026\"",
+    "source": "console-api",
+    "timestamp": 1766092067143
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 528:16 \"afterFirstFetch(): 6.760986328125 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092067167
+  },
+  {
+    "level": "WARNING",
+    "message": "https://map.opensky-network.org/ - [.WebGL-0x129404afe900]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+    "source": "rendering",
+    "timestamp": 1766092067176
+  },
+  {
+    "level": "DEBUG",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 458:43 \"first fetch(): 199.5859375 ms\"",
+    "source": "console-api",
+    "timestamp": 1766092067256
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 6763:16 \"Location from browser: 36.8279552, 10.2039552\"",
+    "source": "console-api",
+    "timestamp": 1766092068086
+  }
+]

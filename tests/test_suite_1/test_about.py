@@ -3,6 +3,7 @@ import pytest
 import time
 from selenium.webdriver.common.by import By
 from config.config import Config
+from utils.web_audit import head_or_get
 
 
 @pytest.mark.functional
@@ -36,7 +37,9 @@ class TestAboutPages:
         links = driver.find_elements(By.XPATH, "//a[contains(@href, 'pdf') or contains(@href, 'arxiv') or contains(text(), 'Download')]")
         if links:
             href = links[0].get_attribute('href')
-            r = requests.head(href, allow_redirects=True, timeout=10)
+            r = head_or_get(href, timeout=10)
+            if r.status_code in (403, 429):
+                pytest.skip(f"External download link blocked (HTTP {r.status_code}): {href}")
             assert r.status_code < 400
 
     def test_ABOUT_04_cross_navigation(self, setup):

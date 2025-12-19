@@ -1,0 +1,14 @@
+[
+  {
+    "level": "SEVERE",
+    "message": "https://openskynetwork.github.io/opensky-api/ 149:6 Uncaught ReferenceError: jQuery is not defined",
+    "source": "javascript",
+    "timestamp": 1766092329316
+  },
+  {
+    "level": "SEVERE",
+    "message": "https://openskynetwork.github.io/favicon.ico - Failed to load resource: the server responded with a status of 404 ()",
+    "source": "network",
+    "timestamp": 1766092331628
+  }
+]

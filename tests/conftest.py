@@ -202,10 +202,20 @@ def driver(settings: RuntimeSettings):
                 logger.warning(f"[DRV] local chromedriver failed: {exc}")
 
         if created_driver is None:
+            # Selenium 4+ can provision the driver via Selenium Manager automatically.
+            # This is the most reliable option on developer machines where Chrome auto-updates.
+            try:
+                created_driver = webdriver.Chrome(options=options)
+                logger.info("[DRV] using Selenium Manager provisioned driver")
+            except Exception as exc:
+                logger.warning(f"[DRV] Selenium Manager driver failed: {exc}")
+
+        if created_driver is None:
             if not settings.allow_driver_download:
                 raise pytest.UsageError(
                     "Chrome driver not available/compatible. "
-                    "Either update `tests/chromedriver.exe` or re-run with `--allow-driver-download`."
+                    "Update `tests/chromedriver.exe`, install a matching chromedriver in PATH, "
+                    "or re-run with `--allow-driver-download` to use webdriver-manager."
                 )
             from webdriver_manager.chrome import ChromeDriverManager
 

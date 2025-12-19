@@ -1,0 +1,599 @@
+\documentclass[12pt,a4paper]{report}
+
+% Language / encoding
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+
+% Layout
+\usepackage{geometry}
+
+\geometry{margin=0.1cm}
+\usepackage{setspace}
+\onehalfspacing
+
+% Links / PDF metadata
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue,
+  pdftitle={Rapport de Projet de Test Logiciel - OpenSky Network},
+  pdfauthor={Amine harrabi},
+  pdfsubject={Software testing automation - OpenSky Network}
+}
+
+% Graphics / tables
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+
+% Styling
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep,topsep=3pt}
+\setlist[enumerate]{noitemsep,topsep=3pt}
+
+% Code listings (for commands/config snippets)
+\usepackage{listings}
+\lstdefinestyle{opensky}{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!20},
+  backgroundcolor=\color{black!2},
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{black!60},
+  stringstyle=\color{teal!70!black}
+}
+\lstset{style=opensky}
+
+% Chapter/section formatting
+\titleformat{\chapter}[display]
+  {\bfseries\Large}
+  {\chaptername\ \thechapter}
+  {0.3em}
+  {\Huge}
+
+% Header/footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Automatisation \& QA --- OpenSky Network}
+\fancyhead[R]{2025--2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Custom boxes
+\newtcolorbox{boxinfo}{
+  breakable,
+  colback=blue!3,
+  colframe=blue!35!black,
+  title=Information,
+  fonttitle=\bfseries
+}
+\newtcolorbox{boxfinding}{
+  breakable,
+  colback=orange!5,
+  colframe=orange!55!black,
+  title=Finding (signal de bug),
+  fonttitle=\bfseries
+}
+\newtcolorbox{boxjira}{
+  breakable,
+  colback=green!4,
+  colframe=green!40!black,
+  title=Format Ticket Jira (proposé),
+  fonttitle=\bfseries
+}
+
+\begin{document}
+
+% -------------------------------------------------------
+% Title page
+% -------------------------------------------------------
+\begin{titlepage}
+\begin{center}
+{\Large Faculté des Sciences de Sfax}\\[0.2cm]
+{\large Département Informatique}\\[1.2cm]
+
+{\Huge \textbf{Rapport de Projet de Test Logiciel}}\\[0.3cm]
+{\Large \textbf{Automatisation Avancée}}\\[1.0cm]
+
+\begin{tcolorbox}[colback=black!2,colframe=black!25,boxrule=0.8pt]
+\centering
+{\Large \textbf{Sujet :}}\\[0.2cm]
+{\Large Automatisation et Audit Qualité du site}\\
+{\Large \textbf{OpenSky Network} (\url{https://opensky-network.org/})}\\[0.4cm]
+{\normalsize Focus : Responsive overflow, performances (LCP/chargement), erreurs console, intégrité liens, reporting Jira}
+\end{tcolorbox}
+
+\vfill
+\begin{tabular}{>{\bfseries}p{5cm} p{9cm}}
+Réalisé par : & Amine Harrabi\\
+              [0.2cm]
+Niveau : & 1\iere\ Année Ingénieur\\[0.2cm]
+Enseignant : & M. Taher Labidi\\[0.2cm]
+Année Universitaire : & 2025--2026\\
+\end{tabular}
+
+\vfill
+{\small Version du framework : Pytest + Selenium (POM) + Audits (requests) + Jira}\\
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\cleardoublepage
+\pagenumbering{arabic}
+
+% -------------------------------------------------------
+% Chapter 1
+% -------------------------------------------------------
+\chapter{Introduction et Contexte du Projet}
+
+\section{Présentation du Projet}
+Ce projet vise à auditer la qualité et la robustesse de la plateforme \textbf{OpenSky Network} via une stratégie de tests \textbf{boîte noire} (Black Box Testing), orientée \textbf{bug-hunting}.\\
+L’objectif n’est pas de \og faire passer des tests \fg{}, mais d’obtenir des \textbf{signaux de bugs} exploitables : anomalies UI/UX (responsive overflow), régressions de performance, erreurs JavaScript/console, liens cassés, et défauts de configuration sécurité (headers).
+
+\section{Cahier des Charges et Objectifs}
+\begin{itemize}
+  \item Mettre en place des suites de tests automatisées (Selenium + Pytest) sur les pages publiques et la carte \texttt{map.opensky-network.org}.
+  \item Détecter des anomalies : scroll horizontal, overflow de blocs de code, erreurs console, erreurs JS runtime.
+  \item Mettre en place des audits non-intrusifs (HTTP headers, intégrité de liens) et les rendre \textbf{stricts} via un mode \texttt{--audit-strict}.
+  \item Générer automatiquement des \textbf{preuves} (captures, HTML, logs console) et faciliter la création de tickets Jira.
+\end{itemize}
+
+\section{Architecture Technique}
+\begin{boxinfo}
+\textbf{Stack :} \texttt{pytest} (orchestration), \texttt{selenium} (UI tests), \texttt{requests} (audits HTTP), Page Object Model (POM).\\
+\textbf{Objectif :} séparation claire \textit{pages} / \textit{tests} / \textit{utils} + collecte d’artifacts.
+\end{boxinfo}
+
+\begin{itemize}
+  \item \textbf{Pages (POM)} : \texttt{pages/base\_page.py}, \texttt{pages/explorer\_page.py}, \texttt{pages/login\_page.py}
+  \item \textbf{Tests} : suites fonctionnelles, performance, cross-browser, responsive, audits (sécurité, liens, console errors)
+  \item \textbf{Utils} : \texttt{utils/web\_audit.py} (HEAD/GET + UA), \texttt{utils/jira\_client.py}, \texttt{utils/selenium\_actions.py}
+  \item \textbf{Artifacts} : \texttt{reports/artifacts/...\ /screenshot.png, page.html, console.json, js\_errors.json}
+\end{itemize}
+
+% -------------------------------------------------------
+% Chapter 2
+% -------------------------------------------------------
+\chapter{Innovations : Bug Hunting, Artifacts et Jira}
+
+\section{Collecte Automatique d’Artifacts (preuve de bug)}
+Lorsqu’un test échoue, le framework sauvegarde automatiquement :
+\begin{itemize}
+  \item \textbf{Capture d’écran} : \texttt{screenshot.png}
+  \item \textbf{Snapshot HTML} : \texttt{page.html}
+  \item \textbf{Logs console navigateur} : \texttt{console.json} (si disponible)
+  \item \textbf{Erreurs runtime JS} : \texttt{js\_errors.json} (collecteur injecté côté client si support Chrome/CDP)
+\end{itemize}
+
+\begin{boxfinding}
+Ces fichiers rendent le bug \textbf{reproductible} et \textbf{vérifiable} (preuve visuelle + contexte DOM + logs).
+\end{boxfinding}
+
+\section{Mode Audit Strict (transformer les findings en échecs)}
+Le projet différencie :
+\begin{itemize}
+  \item \textbf{Mode normal} : log des \texttt{[FINDING]} (utile pour un site externe instable)
+  \item \textbf{Mode strict} : \texttt{--audit-strict} force l’échec dès qu’un défaut est détecté
+\end{itemize}
+
+\section{Intégration Jira (optionnelle)}
+Le mode \texttt{--jira-create-on-fail} peut créer automatiquement un ticket Jira en cas d’échec, et joindre les artifacts.
+
+\begin{boxjira}
+\textbf{Champs recommandés pour un ticket :}
+\begin{itemize}
+  \item \textbf{Summary} : [AUTOTEST] Nom du test + symptôme (ex: overflow responsive)
+  \item \textbf{Environment} : OS, Chrome version, headless on/off
+  \item \textbf{Steps to Reproduce} : URL + viewport (si responsive) + actions
+  \item \textbf{Expected vs Actual}
+  \item \textbf{Attachments} : screenshot + page.html + console.json + js\_errors.json
+\end{itemize}
+\end{boxjira}
+
+% -------------------------------------------------------
+% Chapter 3
+% -------------------------------------------------------
+\chapter{Analyse Détaillée des Suites de Tests}
+
+\section{Suite 1 : Fonctionnel (Pages publiques)}
+\subsection{Objectif}
+Valider que les pages publiques essentielles sont accessibles et cohérentes (Home, About, Feed, Data), et que les liens critiques pointent vers les pages attendues.
+
+\subsection{Exemples de scénarios}
+\begin{itemize}
+  \item Vérification de sections principales sur la home (contenu, liens).
+  \item Navigation \og Sign in \fg{} vers l’auth (robustifiée par click sécurisé).
+  \item Vérification de pages About/FAQ/Terms/Privacy.
+\end{itemize}
+
+\section{Suite 2 : Performance et Charge (Best-effort)}
+\subsection{Objectif}
+Mesurer des indicateurs simples (LCP approximée, load time proxy, 404 latency) et détecter des régressions potentielles.
+
+\begin{boxinfo}
+Les seuils sont \textbf{stricts uniquement} avec \texttt{--audit-strict}, sinon le framework enregistre un \texttt{[FINDING]}.
+\end{boxinfo}
+
+\subsection{Scénarios}
+\begin{itemize}
+  \item Cold load (throttling réseau si CDP disponible)
+  \item Warm load (cache)
+  \item API docs sous réseau lent (LCP si disponible)
+  \item 404 probe : latence et taille payload
+\end{itemize}
+
+\section{Suite 3 : Compatibilité Cross-Browser}
+\subsection{Objectif}
+Smoke tests orientés compatibilité (chargement, interaction simple, capture screenshot, vérification logs console).
+
+\subsection{Remarque}
+Le site peut ne pas utiliser de balise \texttt{<header>}. Le test vérifie désormais \texttt{<body>} et journalise les erreurs console en mode normal.
+
+\section{Suite 4 : Responsive Design}
+\subsection{Objectif}
+Détecter des anomalies UI sur plusieurs viewports (mobile, tablette, desktop) :
+\begin{itemize}
+  \item Scroll horizontal (overflow global)
+  \item Overflow de blocs \texttt{<pre>/<code>}
+  \item Heuristique de tap targets
+  \item Screenshots pour revue visuelle
+\end{itemize}
+
+\begin{boxfinding}
+\textbf{Candidats Jira typiques :} scroll horizontal sur mobile, code block overflow sur docs, éléments non adaptés au viewport.
+\end{boxfinding}
+
+\section{Suite 5 : Sécurité (Non-intrusif)}
+Audit headers HTTP : HSTS, \texttt{nosniff}, politiques (Referrer/Permissions), protections de framing (XFO/CSP).
+
+\section{Suite 6 : Intégrité des Liens}
+Extraction des URLs depuis le DOM (liens/scripts/css/images) puis contrôle HTTP.
+Le client HTTP utilise un \textbf{User-Agent navigateur} pour réduire les faux 403.
+
+\section{Suite 7 : Erreurs Console / Erreurs JS runtime}
+Collecte des erreurs console (Chrome) + collecteur JS runtime (best-effort). Les anomalies sont des \textbf{signaux forts} de bug front-end.
+
+\section{Suite 8 : Fuzzing léger des Inputs}
+Tests négatifs (payloads XSS usuels) sur la recherche de la carte : absence d’alert et heuristiques d’injection.
+
+% -------------------------------------------------------
+% Chapter 4
+% -------------------------------------------------------
+\chapter{Exécution, Résultats et Exploitation Jira}
+
+\section{Commandes d’exécution}
+\begin{lstlisting}[language=bash,caption={Commandes principales (Windows PowerShell)}]
+# Activer l'environnement
+.\venv\Scripts\activate
+
+# Run complet
+python -m pytest
+
+# Bug hunting strict (transformer findings en FAIL)
+python -m pytest -m "responsive or js or performance or links" --audit-strict
+
+# Audit + création Jira en cas d'échec
+python -m pytest -m "responsive or js or performance or links" --audit-strict ^
+  --jira-create-on-fail --jira-project=QA --jira-label=opensky
+\end{lstlisting}
+
+\section{Dossier des preuves}
+Les preuves sont générées automatiquement dans :
+\begin{itemize}
+  \item \texttt{reports/artifacts/<test\_id>/screenshot.png}
+  \item \texttt{reports/artifacts/<test\_id>/page.html}
+  \item \texttt{reports/artifacts/<test\_id>/console.json}
+  \item \texttt{reports/artifacts/<test\_id>/js\_errors.json}
+\end{itemize}
+
+\section{Modèle de ticket Jira (copiable)}
+\begin{boxjira}
+\textbf{Summary :} [AUTOTEST] Responsive overflow sur \texttt{/data/api-docs} (Viewport 2560x1440)\\
+\textbf{Steps :}
+\begin{enumerate}
+  \item Ouvrir \url{https://opensky-network.org/data/api-docs}
+  \item Définir viewport : 2560x1440
+  \item Observer le rendu des blocs de code
+\end{enumerate}
+\textbf{Expected :} Aucun scroll horizontal / pas d’overflow\\
+\textbf{Actual :} Overflow visible + scroll horizontal\\
+\textbf{Attachments :} screenshot.png + page.html + console.json
+\end{boxjira}
+
+% -------------------------------------------------------
+% Chapitre Résultats Exhaustifs des Tests
+% -------------------------------------------------------
+\chapter{Récapitulatif Exhaustif des Suites et Résultats}
+
+\section{Légende}
+\begin{itemize}
+  \item \textbf{PASSED} : Test réussi
+  \item \textbf{FAILED} : Test échoué (détaillé ci-dessous)
+  \item \textbf{SKIPPED} : Test ignoré (pré-requis manquant ou non applicable)
+\end{itemize}
+
+\section{Détail par Suite de Tests}
+
+\subsection{Suite 1 : About}
+\begin{itemize}
+  \item test_ABOUT_01_faq_searchable : \textbf{PASSED}
+  \item test_ABOUT_02_terms_and_privacy : \textbf{PASSED}
+  \item test_ABOUT_03_publications_links : \textbf{SKIPPED}
+  \item test_ABOUT_04_cross_navigation : \textbf{PASSED}
+\end{itemize}
+
+\subsection{Suite 1 : Data}
+\begin{itemize}
+  \item test_DATA_01_main_data_page_methods : \textbf{PASSED}
+  \item test_DATA_02_aircraft_alerts : \textbf{PASSED}
+  \item test_DATA_03_api_docs_navigation : \textbf{PASSED}
+  \item test_DATA_04_tools_page_links : \textbf{PASSED}
+  \item test_DATA_05_scientific_datasets : \textbf{PASSED}
+\end{itemize}
+
+\subsection{Suite 1 : Feed}
+\begin{itemize}
+  \item test_FEED_01_main_feed_overview : \textbf{PASSED}
+  \item test_FEED_02_raspberry_pi_guide : \textbf{PASSED}
+  \item test_FEED_03_debian_docker_steps_present : \textbf{PASSED}
+  \item test_FEED_04_specialized_feed_pages : \textbf{PASSED}
+  \item test_FEED_05_downloads_and_removal_documented : \textbf{SKIPPED}
+\end{itemize}
+
+\subsection{Suite 1 : Home}
+\begin{itemize}
+  \item test_HOME_01_homepage_loads_and_sections_visible : \textbf{PASSED}
+  \item test_HOME_02_navigation_links : \textbf{PASSED}
+  \item test_HOME_03_signin_cta : \textbf{PASSED}
+  \item test_HOME_04_news_updates_links : \textbf{PASSED}
+\end{itemize}
+
+\subsection{Suite 1 : NonFunctional}
+\begin{itemize}
+  \item test_NF_01_browser_compatibility_smoke : \textbf{PASSED}
+  \item test_NF_02_page_load_performance : \textbf{PASSED}
+  \item test_NF_03_https_and_mixed_content : \textbf{PASSED}
+  \item test_NF_05_sitemap_validation_quick : \textbf{PASSED}
+\end{itemize}
+
+\subsection{Suite 1 Functional (détaillé)}
+\begin{itemize}
+  \item test_01_map_loads_successfully_and_performance : \textbf{FAILED}
+  \item test_02_search_input_and_table_presence : \textbf{PASSED}
+  \item test_03_map_controls_present : \textbf{FAILED}
+  \item test_04_home_page_has_flight_map_link : \textbf{PASSED}
+  \item test_05_login_link_points_to_auth : \textbf{PASSED}
+\end{itemize}
+\textbf{Échecs détaillés :}
+\begin{itemize}
+  \item \textbf{test_01_map_loads_successfully_and_performance}
+    \begin{itemize}
+      \item Objectif : Vérifier le chargement rapide de la carte et la visibilité du canvas.
+      \item Scénario : Naviguer vers la carte, vérifier la visibilité, mesurer le temps.
+      \item Résultat attendu : Carte visible, temps sous seuil.
+      \item Code :
+      \begin{lstlisting}[language=Python]
+assert explorer_page.is_map_visible(), "Map canvas did not become visible within timeout"
+assert load_time <= Config.MAP_LOAD_THRESHOLD, f"Map loaded too slowly: {load_time}s"
+      \end{lstlisting}
+    \end{itemize}
+  \item \textbf{test_03_map_controls_present}
+    \begin{itemize}
+      \item Objectif : Vérifier la présence des contrôles Home, Follow, Random, Zoom.
+      \item Scénario : Accéder à la carte, vérifier chaque contrôle par ID.
+      \item Résultat attendu : Tous les contrôles sont visibles.
+      \item Code :
+      \begin{lstlisting}[language=Python]
+assert visible, f"{desc} ({ctrl_id}) not visible"
+assert explorer_page.is_element_visible((By.ID, 'zoom_in')) or explorer_page.is_element_visible((By.ID, 'zoom'))
+      \end{lstlisting}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Suite 1 Functional HomePages}
+\begin{itemize}
+  \item test_HOME_01_homepage_loads_and_sections_visible : \textbf{FAILED}
+  \item test_HOME_02_navigation_links : \textbf{PASSED}
+  \item test_HOME_03_signin_cta : \textbf{PASSED}
+  \item test_HOME_04_news_updates_links : \textbf{PASSED}
+\end{itemize}
+\textbf{Échec détaillé :}
+\begin{itemize}
+  \item \textbf{test_HOME_01_homepage_loads_and_sections_visible}
+    \begin{itemize}
+      \item Objectif : Vérifier la présence des sections principales sur la home.
+      \item Scénario : Charger la home, vérifier titre, news, liens.
+      \item Résultat attendu : Toutes les sections présentes.
+      \item Code :
+      \begin{lstlisting}[language=Python]
+assert "OpenSky Network" in driver.title, f"Unexpected homepage title: {driver.title} (strict)"
+assert news, "Latest News & Updates section not found"
+      \end{lstlisting}
+    \end{itemize}
+\end{itemize}
+
+% Suites Inline, Performance, Responsive, Sécurité, Cross-Browser, Liens, Console, Fuzzing
+
+\subsection{Suites Inline}
+\begin{itemize}
+  \item Tests inline (About / Feed / Data inline variants) : la plupart \textbf{PASSED}, quelques cas \textbf{SKIPPED} (publications, téléchargements) selon disponibilité du contenu.
+\end{itemize}
+
+\subsection{Suite 2 : Performance (détaillé)}
+\begin{itemize}
+  \item test_perf_01_homepage_cold_load_tti : \textbf{FAILED}
+  \item test_perf_02_homepage_warm_load_cache_enabled : \textbf{FAILED}
+  \item test_perf_06_api_docs_on_slow_3g : \textbf{SKIPPED}
+  \item test_perf_11_404_page_speed : \textbf{FAILED}
+  \item test_perf_k6_run_smoke : \textbf{SKIPPED (k6 absent)}
+  \item TestPerformanceSuite::test_08_map_load_time : \textbf{PASSED}
+  \item TestPerformanceSuite::test_09_search_response_time : \textbf{PASSED}
+  \item TestPerformanceSuite::test_10_flight_details_panel_response_time : \textbf{SKIPPED}
+  \item TestPerformanceSuite::test_11_map_interaction_stress : \textbf{FAILED}
+  \item TestPerformanceSuite::test_12_concurrent_sessions_load_test : \textbf{PASSED}
+  \item TestPerformanceSuite::test_13_page_refresh_stress_test : \textbf{PASSED}
+\end{itemize}
+
+	extbf{Échecs performance (extraits) :}
+\begin{itemize}
+  \item \textbf{test_perf_01_homepage_cold_load_tti}
+    \begin{itemize}
+      \item Objectif : Mesurer LCP/TBT/CLS et proxy load time sous réseau 4G.
+      \item Résultat attendu : LCP $\leq$ 1.5s, load time $\leq$ 2.0s, TBT $\leq$ 0.05s, CLS $\leq$ 0.05.
+      \item Assertion ratée (extrait) :
+      \begin{lstlisting}[language=Python]
+assert lcp <= 1.5, f"LCP too high: {lcp}s"
+assert load_time <= 2.0, f"Load time (proxy TTI) too high: {load_time}s"
+      \end{lstlisting}
+    \end{itemize}
+
+  \item \textbf{test_perf_02_homepage_warm_load_cache_enabled}
+    \begin{itemize}
+      \item Objectif : Vérifier temps de la visite répétée (cache habilité).
+      \item Résultat attendu : LCP $\leq$ 1.0s, load time $\leq$ 1.2s.
+      \item Assertion ratée (extrait) :
+      \begin{lstlisting}[language=Python]
+if settings.audit_strict:
+    assert lcp <= 1.0, f"Warm LCP too high: {lcp}s"
+    assert load_time <= 1.2, f"Warm load TTI proxy too high: {load_time}s"
+      \end{lstlisting}
+    \end{itemize}
+
+  \item \textbf{test_perf_11_404_page_speed}
+    \begin{itemize}
+      \item Objectif : Vérifier la latence et la taille de la page 404.
+      \item Résultat attendu : $\leq$ 500 ms et $\leq$ 50 KB.
+      \item Assertion ratée (extrait) :
+      \begin{lstlisting}[language=Python]
+assert elapsed <= 500, f"404 page response too slow: {elapsed} ms"
+assert len(r.content) <= 50 * 1024, f"404 payload too large: {len(r.content)} bytes"
+      \end{lstlisting}
+    \end{itemize}
+
+  \item \textbf{TestPerformanceSuite::test_11_map_interaction_stress}
+    \begin{itemize}
+      \item Objectif : Stress interactions (double-click, drag) et vérifier durée totale.
+      \item Résultat attendu : total_time $<$ 25s.
+      \item Assertion ratée (extrait) :
+      \begin{lstlisting}[language=Python]
+assert total_time < 25, f"Map interaction stress test took too long ({total_time:.2f}s)."
+      \end{lstlisting}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Suite 3 : Cross-Browser}
+\begin{itemize}
+  \item Majorité des cas sur Chrome : \textbf{PASSED}
+  \item Plusieurs cas sur Firefox, Edge, Safari : \textbf{SKIPPED} (environnements non disponibles)
+  \item test_cb_matrix[CB-09-chrome-old-any] : \textbf{PASSED}
+\end{itemize}
+
+\subsection{Suite 4 : Responsive (détaillé)}
+\begin{itemize}
+  \item RWD-01 (320x568 iPhone SE) : \textbf{FAILED}
+  \item RWD-02 (375x667 iPhone 8) : \textbf{FAILED}
+  \item RWD-03 (390x844 iPhone 14) : \textbf{FAILED}
+  \item RWD-04 (414x896 iPhone Plus) : \textbf{FAILED}
+  \item RWD-05 (360x800 Budget Android) : \textbf{FAILED}
+  \item RWD-06 (768x1024 iPad) : \textbf{PASSED}
+  \item RWD-07 (1024x1366 iPad Pro landscape) : \textbf{FAILED}
+  \item RWD-08 (1440x900 Laptop) : \textbf{FAILED}
+  \item RWD-09 (1920x1080 Desktop) : \textbf{FAILED}
+  \item RWD-10 (2560x1440 2K) : \textbf{FAILED}
+  \item RWD-11 (1366x768 Zoom125) : \textbf{PASSED}
+  \item RWD-12 (1366x768 Dark Mode forced) : \textbf{PASSED}
+\end{itemize}
+
+	extbf{Points d'échec responsive (générique) :}
+\begin{itemize}
+  \item Symptômes : scroll horizontal, overflow de blocs \texttt{<pre>/<code>}, tap targets insuffisants.
+  \item Extraits d'assertions ratées :
+  \begin{lstlisting}[language=Python]
+assert not has_scroll, f"Horizontal scroll detected for {case_id} at {w}x{h} on {p}"
+assert ok_tap, f"No tap targets >=44px detected for {case_id} at {w}x{h} on {p}"
+assert not overflow, f"Code block overflow detected for {case_id} at {w}x{h} on {p}"
+  \end{lstlisting}
+  \item Recommandation rapide : prioriser corrections CSS (overflow, max-width), vérifier styles pour code blocks et responsive meta viewport.
+\end{itemize}
+
+\subsection{Suite 5 : Sécurité (détaillé)}
+\begin{itemize}
+  \item test_security_01_https_redirect : \textbf{PASSED}
+  \item test_security_02_security_headers_public_pages[/] : \textbf{FAILED}
+  \item test_security_02_security_headers_public_pages[/about] : \textbf{FAILED}
+  \item test_security_02_security_headers_public_pages[/data] : \textbf{FAILED}
+  \item test_security_02_security_headers_public_pages[/feed] : \textbf{FAILED}
+\end{itemize}
+
+	extbf{Erreur typique (headers manquants) :}
+\begin{itemize}
+  \item Principe : vérifier HSTS, X-Content-Type-Options=nosniff, X-Frame-Options ou CSP frame-ancestors, Referrer-Policy, Permissions-Policy.
+  \item Extrait d'assertion :
+  \begin{lstlisting}[language=Python]
+assert not missing, f"Missing/weak security headers on {url}: {missing}"
+  \end{lstlisting}
+  \item Recommandation : ajouter HSTS, X-Content-Type-Options: nosniff, et CSP/frame-ancestors; documenter l'impact des proxy/CDN.
+\end{itemize}
+
+\subsection{Suite 6 : Intégrité des Liens}
+\begin{itemize}
+  \item Principaux parcours internes testés : Home, About, FAQ, Data, Feed (raspberry) — la majorité \textbf{PASSED}.
+  \item Aucun lien critique cassé identifié dans l'index fourni.
+\end{itemize}
+
+\subsection{Suite 7 : Erreurs Console / JS runtime}
+\begin{itemize}
+  \item test_js_01_no_console_errors_on_key_pages : toutes les variantes citées \textbf{PASSED} (Home, About, API, Feed).
+  \item Conclusion : pas d'erreurs console critiques détectées lors des runs fournis.
+\end{itemize}
+
+\subsection{Suite 8 : Fuzzing / Inputs}
+\begin{itemize}
+  \item test_input_01_map_search_rejects_dom_xss : payloads fournis \textbf{PASSED} — aucune exécution d'alerte détectée.
+\end{itemize}
+
+\section{Résumé et Priorisation (Quick wins)}
+\begin{itemize}
+  \item Priorité Haute : corriger headers de sécurité (pages /, /about, /data, /feed) ; responsive overflows critiques (mobile & large desktop viewports). 
+  \item Priorité Moyenne : perf cold/warm LCP et stress map (investigation instrumentation LCP/CDP). 
+  \item Priorité Basse : étendre cross-browser (environnements manquants) et ajouter historisation métriques.
+\end{itemize}
+
+% Pour chaque échec, les artifacts générés (captures, page.html, console.json) se trouvent sous \texttt{reports/artifacts/<test_id>} et facilitent la reproduction.
+
+% -------------------------------------------------------
+\chapter{Conclusion et Perspectives}
+
+\section{Points Forts du Projet}
+\begin{itemize}
+  \item \textbf{Approche orientée bug-hunting :} Framework conçu pour produire des signaux exploitables plutôt que de simplement passer des tests.
+  \item \textbf{Preuves automatisées :} Captures, snapshots HTML et logs console attachables automatiquement aux tickets Jira.
+  \item \textbf{Mode audit strict :} Permet de transformer des findings en critères bloquants pour des runs de qualification.
+  \item \textbf{Couverture large :} Suites fonctionnelles, performance, responsive, sécurité, intégrité liens, console et fuzzing.
+  \item \textbf{Extensibilité :} Architecture POM et modules utilitaires facilitant l’ajout de tests et d’artefacts supplémentaires.
+\end{itemize}
+
+\section{Perspectives}
+\begin{itemize}
+  \item Prioriser corrections sécurité (headers) et responsive overflows identifiés.
+  \item Ajouter historisation des métriques performance pour détection de tendances.
+  \item Étendre les runs cross-browser automatisés (Selenium Grid / CI) pour réduire les SKIPPED liés aux environnements.
+  \item Intégrer un module d’accessibilité (axe-core) et un dashboard centralisé des findings.
+\end{itemize}
+
+% -------------------------------------------------------
+\end{document}
+

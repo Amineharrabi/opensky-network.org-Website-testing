@@ -3,6 +3,7 @@ import time
 import requests
 from selenium.webdriver.common.by import By
 from config.config import Config
+from utils.web_audit import head_or_get
 
 
 @pytest.mark.nonfunctional
@@ -38,14 +39,18 @@ class TestNonFunctional:
         # Ensure the current page uses https
         assert driver.current_url.startswith('https://')
         # Basic network check using requests for homepage
-        r = requests.head(self.BASE, allow_redirects=True, timeout=10)
+        r = head_or_get(self.BASE, timeout=10)
+        if r.status_code in (403, 429):
+            pytest.skip(f"Homepage blocked by WAF/CDN (HTTP {r.status_code})")
         assert r.status_code < 400
 
     def test_NF_05_sitemap_validation_quick(self):
         """NF-05: Quick sitemap.xml check (if present)"""
         sitemap_url = f"{Config.BASE_URL.rstrip('/')}/sitemap.xml"
         try:
-            r = requests.head(sitemap_url, allow_redirects=True, timeout=8)
+            r = head_or_get(sitemap_url, timeout=8)
+            if r.status_code in (403, 429):
+                pytest.skip(f"sitemap.xml blocked by WAF/CDN (HTTP {r.status_code})")
             assert r.status_code in (200, 301, 302)
         except requests.RequestException:
             pytest.skip('sitemap.xml not available or network blocked')

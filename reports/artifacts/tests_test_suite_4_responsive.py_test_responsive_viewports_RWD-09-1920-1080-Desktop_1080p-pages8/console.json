@@ -1,0 +1,8 @@
+[
+  {
+    "level": "SEVERE",
+    "message": "https://openskynetwork.github.io/opensky-api/ 149:6 Uncaught ReferenceError: jQuery is not defined",
+    "source": "javascript",
+    "timestamp": 1766092334318
+  }
+]

@@ -44,10 +44,31 @@ def normalize_url(base_url: str, url: str) -> str | None:
 
 def head_or_get(url: str, timeout: float = 10.0) -> requests.Response:
     try:
-        return requests.head(url, allow_redirects=True, timeout=timeout)
+        return requests.head(
+            url,
+            allow_redirects=True,
+            timeout=timeout,
+            headers={
+                # Some CDNs/WAFs block default python-requests user agents (403/429).
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "*/*",
+            },
+        )
     except requests.RequestException:
         # Some servers block HEAD; fall back to GET (small timeout, no streaming).
-        return requests.get(url, allow_redirects=True, timeout=timeout)
+        return requests.get(
+            url,
+            allow_redirects=True,
+            timeout=timeout,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "*/*",
+            },
+        )
 
 
 def check_urls(
@@ -139,4 +160,3 @@ def collect_dom_urls(driver, *, base_url: str) -> dict[str, list[str]]:
 def security_headers(url: str, timeout: float = 10.0) -> dict[str, str]:
     resp = head_or_get(url, timeout=timeout)
     return {k.lower(): v for k, v in resp.headers.items()}
-

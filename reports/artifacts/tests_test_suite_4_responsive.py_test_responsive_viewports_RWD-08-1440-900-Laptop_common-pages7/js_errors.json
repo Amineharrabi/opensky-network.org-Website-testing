@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "error",
+    "payload": {
+      "colno": 7,
+      "filename": "https://openskynetwork.github.io/opensky-api/",
+      "lineno": 150,
+      "message": "Uncaught ReferenceError: jQuery is not defined"
+    },
+    "ts": 1766092329309
+  }
+]

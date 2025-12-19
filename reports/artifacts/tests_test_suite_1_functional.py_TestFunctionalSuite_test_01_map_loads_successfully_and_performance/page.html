@@ -1,0 +1,1107 @@
+<html style="--SCALE: 1; --BGCOLOR1: #313131; --BGCOLOR2: #242424; --TXTCOLOR1: #BFBFBF; --TXTCOLOR2: #D8D8D8; --TXTCOLOR3: #a8a8a8;"><head>
+    <meta name="description" content="tar1090 - ADS-B plane tracking interface">
+
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+
+    <!-- HEAD_ANCHOR -->
+
+    <!-- CSS_ANCHOR -->
+    <link rel="stylesheet" href="libs/jquery-ui-1.13.2.min.css" type="text/css">
+    <link rel="stylesheet" href="libs/ol-8.2.0.css" type="text/css">
+    <link rel="stylesheet" href="libs/ol-layerswitcher-4.1.1.css" type="text/css">
+    <link rel="stylesheet" href="style_876c03de57d78e786c30ed77aa62a78c.css" type="text/css">
+    <link rel="icon" type="image/png" href="images/opensky-favicon.png">
+    <title>OpenSky Network - tracking 9556 aircraft | 126973.5/s</title>
+  </head>
+
+  <body>
+    <!-- BODY_ANCHOR -->
+    <div id="layout_container">
+
+      <div id="highlighted_infoblock" style="pointer-events: none">
+        <div class="highlightedTitle infoBlockSection">
+          <div>
+            <span class="identLarge"><span id="highlighted_callsign">n/a</span></span>
+          </div>
+          <div>
+            <span class="identSmall"><span id="highlighted_pf_route"></span></span>
+          </div>
+        </div>
+        <div class="infoBlockSection">
+          <div>
+            <div class="infoHeading"><span>Reg.: </span></div>
+            <div class="infoData"><span id="highlighted_registration">n/a</span></div>
+          </div>
+          <div>
+            <div class="infoHeading"><span>Type code: </span></div>
+            <div class="infoData"><span id="highlighted_icaotype">n/a</span></div>
+          </div>
+          <div>
+              <div id="routeRowHighlight" class="infoHeading"><span title="Reported flight origin and destination according to adsbdb.com">Route</span>:</div>
+              <div class="infoData"><span id="highlighted_route"></span></div>
+          </div>
+          <div class="rSpacer">
+          </div>
+          <div>
+            <div class="infoHeading"><span>Altitude: </span></div>
+            <div class="infoData"><span id="highlighted_altitude">n/a</span></div>
+          </div>
+          <div>
+            <div class="infoHeading"><span>Speed: </span></div>
+            <div class="infoData"><span id="highlighted_speed">n/a</span></div>
+          </div>
+          <div class="rSpacer">
+          </div>
+          <div>
+            <div class="infoHeading"><span>Source: </span></div>
+            <div class="infoData"><span id="highlighted_source">n/a</span></div>
+          </div>
+          <div>
+            <div class="infoHeading"><span>RSSI: </span></div>
+            <div class="infoData"><span id="highlighted_rssi">n/a</span></div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="selected_infoblock" style="display: none; width: 200px;">
+        <div id="infoblock_close" class="infoblockCloseBox" style="filter: invert(100%);"></div>
+        <div id="infoblock-container">
+
+          <div class="highlightedTitle infoBlockSection">
+            <div>
+              <span class="identLarge" title="Callsign: Typically the air traffic control callsign or the aircraft's registration, as entered into the transponder by the pilot" id="selected_callsign">n/a</span>
+            </div>
+            <div id="selected_icao" title="ICAO hex ID: The aircraft's unique ICAO identification number shown in hexadecimal format as set in the aircrafts transponder (can be wrong, we will still display the data with the wrong hex)">
+            </div>
+            <div style="display: none" id="creditsSelected">
+              <table class="infoSectionTable">
+                <tbody><tr>
+                  <td>
+                    <span class="credits-image"></span>
+                  </td>
+                  <td>
+                    <span class="credits-text">aggregator.com</span>
+                  </td>
+                </tr>
+              </tbody></table>
+            </div>
+          </div>
+          <div id="anon_mlat_info" class="infoBlockSection hidden">
+            <div>
+              <div class="infoHeading">
+                <span>Non-ICAO hex, info:</span>
+              </div>
+            </div>
+            <div class="rSpacer"></div>
+            <div class="infoHeading">
+              <span><a class="link" target="_blank" href="https://discussions.flightaware.com/t/flightaware-mlat-network-announcement/18874" rel="noreferrer">Anonymized MLAT result</a></span>
+            </div>
+            <div class="rSpacer"></div>
+            <div class="rSpacer"></div>
+            <div class="rSpacer"></div>
+            <div class="rSpacer"></div>
+            <div class="rSpacer"></div>
+            <div class="rSpacer"></div>
+            <div>
+              <div class="infoHeading">
+                <span>No <a class="link" target="_blank" href="https://en.wikipedia.org/wiki/Aviation_transponder_interrogation_modes#ICAO_24-bit_address" rel="noreferrer">ICAO 24 bit address</a></span>
+              </div>
+            </div>
+          </div>
+          <div id="tisb_info" class="infoBlockSection hidden">
+            <div class="infoHeading">
+              <span>Non-ICAO hex, info:</span>
+            </div>
+            <div class="infoHeading">
+              <span title="TIS-B link">
+                <a class="link" target="_blank" href="https://skybrary.aero/articles/traffic-information-service-broadcast-tis-b" rel="noreferrer">ATC contact broadcast</a></span>
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div class="infoHeading">
+              This hex ID is dynamic and can't be connected to a type or registration
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div class="infoHeading">
+              Often corresponding MLAT contact for the same aircraft
+            </div>
+            <div class="infoHeading">
+              <span>MLAT requires the contact to have a ModeS transponder and reception by 4 receivers</span>
+            </div>
+            <div class="infoHeading">
+              <span><a class="link" target="_blank" href="https://en.wikipedia.org/wiki/Aviation_transponder_interrogation_modes#ICAO_24-bit_address" rel="noreferrer">What is a hex ID?</a></span>
+            </div>
+          </div>
+          <div id="reg_info" class="infoBlockSection">
+            <table class="infoSectionTable">
+              <tbody><tr id="pf_info_container" class="">
+                <td>
+                  <div>
+                    <span class="identMedium" id="selected_pf_info"> </span>
+                  </div>
+                </td>
+              </tr>
+              <tr id="photo_container" style="height: 150.993px;">
+                <td>
+                  <div title="Aircraft Photo" id="selected_photo" style="width: 171px;"></div>
+                  <div id="copyrightInfo"></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="infoHeading">
+                    <span title="Registration: The alphanumeric registration code assigned by the country in which the aircraft is registered.">Reg.: </span>
+                  </div>
+                  <div class="infoData"><span id="selected_registration">n/a</span></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="infoData">
+                    <span title="Country of registration" id="selected_country">n/a</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="infoHeading">
+                    <span title="Database flags (military / PIA / LAD)">DB flags: </span>
+                  </div>
+                  <div class="infoData"><span id="selected_dbFlags">n/a</span></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="infoHeading" title="ICAO type code (A320/B738)">Type: </span>
+                  <span class="infoData" id="selected_icaotype"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="infoData" title="Year of Manufacture / Full Type" id="selected_typelong"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="infoData" title="" id="selected_ownop"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="infoHeading" title="ICAO type description (L/S/H Landplane/Seaplane/Helicopter 1/2/3/4 Number of P/T/J Reciprocating/Turboprop/Jet Engines">Type Desc.: </span>
+                  <span class="infoData" id="selected_typedesc"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="infoHeading">
+                    <span title="A 4-digit octal code assigned to the aircraft by Air Traffic Control">Squawk</span>:
+                  </div>
+                  <div class="infoData">
+                    <span id="selected_squawk1"></span>
+                  </div>
+                </td>
+              </tr>
+              <tr id="routeRow" class="hidden" style="display: table-row;">
+                <td>
+                  <div class="infoHeading">
+                    <span title="Reported flight origin and destination according to adsbdb.com">Route</span>:
+                  </div>
+                  <div class="infoData">
+                    <span id="selected_route"></span>
+                  </div>
+                </td>
+              </tr>
+              <tr id="photoLinkRow" class="hidden">
+                <td>
+                  <div class="infoHeading">
+                    <span class="link" id="selected_photo_link"></span>
+                  </div>
+                </td>
+              </tr>
+            </tbody></table>
+          </div>
+          <button id="show_trace" type="button" class="greyButton">History</button>
+          <div id="history_collapse" class="infoBlockSection" style="display: none">
+            <div class="identSmall" id="trace_date">UTC day:
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div>
+              <input id="histDatePicker" class="identSmall datepicker hasDatepicker" value="Pick a date" size="10">
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div>
+              <button class="formButton" id="trace_back_1d">previous</button>
+              <button class="formButton" id="trace_jump_1d">next</button>
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div class="identSmall" id="leg_sel">
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div>
+              <button class="formButton" id="leg_prev">previous</button>
+              <button class="formButton" id="leg_next">next</button>
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div class="identSmall" id="trace_time">
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div>
+              <button class="formButton" id="tStop">stop</button>
+              <button class="formButton" id="t1x">1x</button>
+              <button class="formButton" id="t5x">5x</button>
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div>
+              <button class="formButton" id="t10x">10x</button>
+              <button class="formButton" id="t20x">20x</button>
+              <button class="formButton" id="t40x">40x</button>
+            </div>
+            <div class="rSpacer">
+            </div>
+            <div>
+              Click on the trace line to start playback!
+            </div>
+          </div>
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              SPATIAL
+            </div>
+          </div>
+          <div id="spatial_block" class="infoBlockSection">
+            <table class="infoSectionTable">
+              <tbody><tr id="receiver_id_div" class="infoBlockSection hidden">
+                <td>
+                  <span class="infoHeading" title="receiver id that supplied the position data">rId:</span>
+                  <span class="infoData" id="receiver_id">n/a</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="infoHeading" title="The speed of the aircraft over the ground.">Groundspeed:</span>
+                  <span class="infoData" id="selected_speed1">n/a</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="infoHeading" id="selected_altitude1_title" title="The uncorrected pressure-derived height of the aircraft above mean sea level (based on barometric pressure)">Baro. altitude</span>:
+                  <span class="infoData" id="selected_altitude1"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="infoHeading" id="selected_altitude_geom1_title" title="The geometric GPS derived altitude referenced to WGS84 ellipsoid (or reference EGM96 when enabled in the settings)">WGS84 altitude</span>:
+                  <span class="infoData" id="selected_altitude_geom1"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="infoHeading">
+                    <span title="Rate of climb or descent">Vert. Rate</span>:
+                  </div>
+                  <div class="infoData">
+                    <span id="selected_vert_rate">n/a</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="infoHeading">
+                    <span title="Direction the aircraft is traveling over the ground">Track</span>:
+                  </div>
+                  <div class="infoData">
+                    <span id="selected_track1">n/a</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="infoHeading">
+                    <span title="Latitude and longitude coordinates of the aircraft's last known position">Pos.:</span>
+                  </div>
+                  <div class="infoData">
+                    <span id="selected_position">n/a</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="infoHeading">
+                    <span title="Distance of the aircraft from your ADS-B site at its last known position">Distance</span>:
+                  </div>
+                  <div class="infoData">
+                    <span id="selected_sitedist2">n/a</span>
+                  </div>
+                </td>
+              </tr>
+
+
+            </tbody></table>
+          </div>
+              <!-- SPATIAL -->
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Signal
+            </div>
+          </div>
+          <div class="infoBlockSection">
+
+            <div>
+              <div class="infoHeading">
+                <span title="Data source for the reported aircraft data (e.g., ADS-B, MLAT, Other Mode S)">Source</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_source">n/a</span>
+              </div>
+            </div>
+            <div id="selected_showTrace_hide">
+              <div>
+                <div class="infoHeading">
+                  <span title="Signal strength from this aircraft on your receiver in dBFS">RSSI</span>:
+                </div>
+                <div class="infoData">
+                  <span id="selected_rssi1">n/a</span>
+                </div>
+              </div>
+              <div>
+                <div class="infoHeading">
+                  <span title="Number of messages received from this aircraft per second (averaged over the last 2 update intervals)">Msg. Rate</span>:
+                </div>
+                <div class="infoData">
+                  <span id="selected_message_rate">n/a</span>
+                </div>
+              </div>
+              <div>
+                <div class="infoHeading">
+                  Messages:
+                </div>
+                <div class="infoData" id="selected_message_count">
+                </div>
+              </div>
+
+              <div class="rSpacer">
+              </div>
+
+              <div>
+                <div class="infoHeading">
+                  <span title="Time in seconds since a position was received from this aircraft">Last Pos.</span>:
+                </div>
+                <div class="infoData">
+                  <span id="selected_seen_pos">n/a</span>
+                </div>
+              </div>
+              <div>
+                <div class="infoHeading">
+                  <span title="Time in seconds since a message was received from this aircraft">Last Seen</span>:
+                </div>
+                <div class="infoData">
+                  <span id="selected_seen">n/a</span>
+                </div>
+              </div>
+            </div>
+          </div> <!-- Signal -->
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              FMS SEL
+            </div>
+          </div>
+          <div class="infoBlockSection">
+            <div>
+              <div class="infoHeading">
+                <span title="The selected altitude in the aircraft's flight management system">Sel. Alt.</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_nav_altitude">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="The selected heading in the aircraft's flight management system">Sel. Head.</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_nav_heading">n/a</span>
+              </div>
+            </div>
+          </div> <!-- FMS SEL -->
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Wind
+            </div>
+          </div>
+          <div class="infoBlockSection">
+            <div>
+              <div class="infoHeading">
+                <span title="Calculated Wind speed">Speed</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_ws">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Calculated wind is blowing out of this direction">Direction (from)</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_wd">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Total (TAT) / Static (SAT/OAT) air temperature calculated using Mach and true airspeed">TAT / OAT</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_temp">n/a</span>
+              </div>
+            </div>
+          </div> <!-- Wind -->
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Speed
+            </div>
+          </div>
+          <div class="infoBlockSection">
+            <div>
+              <div class="infoHeading">
+                <span title="The speed of the aircraft over the ground">Ground:</span>
+              </div>
+              <div class="infoData">
+                <span id="selected_speed2">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="True airspeed (the speed of the aircraft relative to the airmass in which it is flying)">True</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_tas">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Indicated airspeed (the airspeed read directly from the airspeed indicator on the aircraft)">Indicated:</span>
+              </div>
+              <div class="infoData">
+                <span id="selected_ias">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="The ratio of the speed of the aircraft to the speed of sound in the surrounding space">Mach</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_mach">n/a</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Altitude
+            </div>
+          </div>
+          <div class="infoBlockSection">
+            <div>
+              <div class="infoHeading">
+                <span id="selected_altitude2_title" title="The uncorrected pressure-derived height of the aircraft above mean sea level (based on barometric pressure)">Barometric</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_altitude2"></span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Rate of climb or descent (derived from barometric altitude)">Baro. Rate</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_baro_rate">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span id="selected_altitude_geom2_title" title="The geometric GPS derived altitude referenced to WGS84 ellipsoid (or reference EGM96 when enabled in the settings)">Geom. WGS84</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_altitude_geom2">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading fourColumnSection3">
+                <span title="Rate of climb or descent (derived from avionics which may be inertial or GNSS/satellite-based)">Geom. Rate</span>:
+              </div>
+              <div class="infoData fourColumnSection4">
+                <span id="selected_geom_rate">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="The altimeter/QNH setting used by the aircraft's navigation systems">QNH</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_nav_qnh">n/a</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Direction
+            </div>
+          </div>
+          <div class="infoBlockSection">
+            <div>
+              <div class="infoHeading">
+                <span title="Direction the aircraft is traveling over the ground">Ground Track</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_track2">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="The aircraft's nose heading relative to true north">True Heading</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_true_heading">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="The aircraft's nose heading relative to magnetic north">Magnetic Heading</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_mag_heading">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Magnetic Declination looked up from the World Magnetic Model">Magnetic Decl.</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_mag_declination">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Rate of turn of the ground track">Track Rate</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_trackrate">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="The aircraft's roll angle">Roll</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_roll">n/a</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Stuff
+            </div>
+          </div>
+          <div class="infoBlockSection">
+            <div>
+              <div class="infoHeading">
+                <span title="The enabled navigation modes as reported by the aircraft (i.e., auto-pilot, Traffic Collision Avoidance System, altitude hold, approach, LNAV approach, and/or VNAV approach)">Nav. Modes</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_nav_modes">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="For ADS-B-equipped aircraft, the version of ADS-B to which the aircraft conforms, as reported by the aircraft">ADS-B Ver.</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_version">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Aircraft category code as reported by the aircraft, this indicates the type of aircraft and, for airplanes, a relative indicator of its size">Category</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_category">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span id="selected_category_label">n/a</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Accuracy
+            </div>
+          </div>
+          <div class="infoBlockSection">
+            <div>
+              <div class="infoHeading">
+                <span title="Navigation accuracy category of the position (95% bound on positions)">NAC<sub>P</sub></span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_nac_p">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Surveillance integrity level (probability of positions lying outside the claimed radius of containment)">SIL</span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_sil">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Navigation accuracy category of the velocity (95% bound on velocities)">NAC<sub>V</sub></span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_nac_v">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Whether the reported pressure altitude has been crosschecked against another source of pressure altitude">NIC<sub>BARO</sub></span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_nic_baro">n/a</span>
+              </div>
+            </div>
+            <div>
+              <div class="infoHeading">
+                <span title="Radius of containment, the reported position of the aircraft is expected to be within this distance of the true position, with a failure rate defined by SIL">R<sub>C</sub></span>:
+              </div>
+              <div class="infoData">
+                <span id="selected_rc">n/a</span>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="bottom-info-container">
+            <div class="bottom-info-text"> Learn more about Mode S data type by hovering over each data label.</div>
+          </div>
+          <div>
+              <div class="infoHeading">
+                  <span>Pos. epoch</span>:
+              </div>
+              <div class="infoData">
+                  <span id="selected_pos_epoch">n/a</span>
+              </div>
+          </div>
+
+          <div class="sectionTitle">
+            <div class="section-title-content">
+              Export KML
+            </div>
+          </div>
+          <button id="export_kml_geom" onclick="exportKML(&quot;geom&quot;)">geometric altitude (EGM96)</button>
+          <button id="export_kml_geom_avg" onclick="exportKML(&quot;geom_avg&quot;)">baro + avg.(EGM96 - baro)</button>
+          <button id="export_kml_baro" onclick="exportKML(&quot;baro&quot;)">uncorrected pressure alt.</button>
+
+        </div>
+      </div> <!-- selected_infoblock -->
+
+      <div id="loader" style="display: none;">
+          <progress id="loader_progress"></progress>
+      </div>
+
+      <div id="map_container" style="background-color:#D2D2D2;">
+        <!-- MAP_CONTAINER_ANCHOR -->
+        <div id="map_canvas" style="background-color:#D2D2D2;">
+        <div class="ol-viewport" style="position: relative; overflow: hidden; width: 100%; height: 100%;"><div class="ol-unselectable ol-layers" style="position: absolute; width: 100%; height: 100%; z-index: 0;"><div class="ol-layer" style="position: absolute; width: 100%; height: 100%;"><canvas width="1025" height="589" style="position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);"></canvas></div><canvas width="1025" height="589" class="ol-layer" style="position: absolute; left: 0px; width: 1025px; height: 589px;"></canvas></div><div class="ol-overlaycontainer" style="position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;"></div><div class="ol-overlaycontainer-stopevent" style="position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;"><div class="ol-attribution ol-unselectable ol-control ol-uncollapsible" style="pointer-events: auto;"><button type="button" aria-expanded="true" title="Attributions"><span class="ol-attribution-collapse">›</span></button><ul><li>© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors.</li></ul></div><div class="ol-scale-line ol-unselectable" style="pointer-events: none;"><div class="ol-scale-line-inner" style="width: 76px;">10 NM</div></div></div></div><div class="ol-zoom ol-unselectable ol-control"><button class="ol-zoom-in" type="button" title="Zoom in">+</button><button class="ol-zoom-out" type="button" title="Zoom out">–</button></div><div class="ol-unselectable ol-control layer-switcher layer-switcher-group-select-style-none layer-switcher-activation-mode-click activationModeClick"><button title="Legend" aria-label="Legend"></button><div class="panel" style="background: var(--BGCOLOR1); border: 4px solid var(--BGCOLOR1);"><ul><li class="layer"><input type="checkbox" id="68904ea3-d024-448b-8fdf-af6ec944f1dc"><label for="68904ea3-d024-448b-8fdf-af6ec944f1dc">Aircraft pos. webGL</label></li><li class="layer"><input type="checkbox" id="49b20241-c536-4b7d-ab6f-2fbbeb0a9388"><label for="49b20241-c536-4b7d-ab6f-2fbbeb0a9388">Aircraft positions</label></li><li class="group"><label>Aircraft trails</label><ul></ul></li><li class="layer"><input type="checkbox" id="4a5e8bf9-88e3-4f8f-99c2-e60b8e225f7b"><label for="4a5e8bf9-88e3-4f8f-99c2-e60b8e225f7b">Your position</label></li><li class="layer"><input type="checkbox" id="47ba5cfe-909e-4cc2-b31c-0a323bd7fa81"><label for="47ba5cfe-909e-4cc2-b31c-0a323bd7fa81">Range rings</label></li><li class="group"><label>Worldwide</label><ul><li class="layer"><input type="radio" id="5ea7ca39-fb7d-4b03-a6c0-9dfa6431ddf7"><label for="5ea7ca39-fb7d-4b03-a6c0-9dfa6431ddf7">OpenStreetMap</label></li><li class="layer"><input type="radio" id="1e2440cf-e0cd-472d-9e0d-00ad8c145f24"><label for="1e2440cf-e0cd-472d-9e0d-00ad8c145f24">CARTO.com English</label></li><li class="layer"><input type="radio" id="12477bad-9951-46e0-bfc8-e2c0fdaa8770"><label for="12477bad-9951-46e0-bfc8-e2c0fdaa8770">ESRI.com Sat.</label></li><li class="layer"><input type="radio" id="d7f4d959-bd58-463e-842b-e04d3951c561"><label for="d7f4d959-bd58-463e-842b-e04d3951c561">ESRI.com Gray</label></li><li class="layer"><input type="radio" id="3934746e-14cf-43b0-b507-552069944ddd"><label for="3934746e-14cf-43b0-b507-552069944ddd">ESRI.com Streets</label></li><li class="layer"><input type="radio" id="a68e8d45-9c26-46a2-b724-cc9cb2e3f675"><label for="a68e8d45-9c26-46a2-b724-cc9cb2e3f675">GIBS Relief</label></li><li class="layer"><input type="radio" id="baba341a-c8c7-4077-972a-8b2917240894"><label for="baba341a-c8c7-4077-972a-8b2917240894">GIBS Clouds 2025-12-17</label></li><li class="layer"><input type="radio" id="a3fef6d9-3e3d-4214-a5e4-813e796ba39b"><label for="a3fef6d9-3e3d-4214-a5e4-813e796ba39b">CARTO.com dark_all</label></li><li class="layer"><input type="radio" id="446c1758-1f66-442f-a33d-64f5424e2c0d"><label for="446c1758-1f66-442f-a33d-64f5424e2c0d">CARTO.com dark_nolabels</label></li><li class="layer"><input type="radio" id="baf095be-dbd5-4a72-89c1-e1b1eed79f6f"><label for="baf095be-dbd5-4a72-89c1-e1b1eed79f6f">CARTO.com light_all</label></li><li class="layer"><input type="radio" id="eb455bc2-2742-4046-b2e3-fc1e6e1ef34b"><label for="eb455bc2-2742-4046-b2e3-fc1e6e1ef34b">CARTO.com light_nolabels</label></li><li class="layer"><input type="checkbox" id="eaf99ca9-7299-4fbe-b305-e48ddc836933"><label for="eaf99ca9-7299-4fbe-b305-e48ddc836933">openAIP TMS</label></li><li class="layer"><input type="checkbox" id="a0900b6f-5882-4584-812d-df680a79f7af"><label for="a0900b6f-5882-4584-812d-df680a79f7af">RainViewer Radar</label></li><li class="layer"><input type="checkbox" id="fd134003-2d3d-46a8-92e0-d4cf0d8dc4e8"><label for="fd134003-2d3d-46a8-92e0-d4cf0d8dc4e8">RainViewer Clouds</label></li></ul></li><li class="group layer-switcher-fold layer-switcher-open"><button></button><label>US</label><ul><li class="layer"><input type="radio" id="53fdccbd-f1be-460d-99eb-cf9d3bb26250"><label for="53fdccbd-f1be-460d-99eb-cf9d3bb26250">VFR Sectional Chart</label></li><li class="layer"><input type="radio" id="5823374c-0449-46b2-bf04-d47838ff0fee"><label for="5823374c-0449-46b2-bf04-d47838ff0fee">VFR Terminal Chart</label></li><li class="layer"><input type="radio" id="05b77220-6075-4e30-aa2e-3f7fd7adf13e"><label for="05b77220-6075-4e30-aa2e-3f7fd7adf13e">IFR Enroute Chart Low</label></li><li class="layer"><input type="radio" id="06c45f65-2326-4d4d-b744-42c1eb4eda8b"><label for="06c45f65-2326-4d4d-b744-42c1eb4eda8b">IFR Enroute Chart High</label></li><li class="layer"><input type="checkbox" id="be9f8c96-8661-44ca-ac97-144bafad7870"><label for="be9f8c96-8661-44ca-ac97-144bafad7870">TFRs</label></li><li class="layer"><input type="checkbox" id="0c82f131-aff7-4fb5-870b-e8830b26c60c"><label for="0c82f131-aff7-4fb5-870b-e8830b26c60c">Special Use Airspace</label></li><li class="layer"><input type="checkbox" id="43c1ec7c-a1de-4fb9-90aa-9f315a573a3b"><label for="43c1ec7c-a1de-4fb9-90aa-9f315a573a3b">NEXRAD</label></li><li class="layer"><input type="checkbox" id="8c7f7dd0-9d2c-47ee-92a9-f148439002ef"><label for="8c7f7dd0-9d2c-47ee-92a9-f148439002ef">NOAA Infrared Sat</label></li><li class="layer"><input type="checkbox" id="2f81a700-cd6c-4cd3-9548-92eabaaa1243"><label for="2f81a700-cd6c-4cd3-9548-92eabaaa1243">NOAA Radar</label></li><li class="layer"><input type="checkbox" id="9bb04ea2-cb41-48b2-9c1a-02bbed0e35f6"><label for="9bb04ea2-cb41-48b2-9c1a-02bbed0e35f6">US A2A Refueling</label></li><li class="layer"><input type="checkbox" id="fc26d879-8cd7-4947-9ab8-8113a9928163"><label for="fc26d879-8cd7-4947-9ab8-8113a9928163">US ARTCC Boundaries</label></li></ul></li><li class="group layer-switcher-fold layer-switcher-open"><button></button><label>Europe</label><ul><li class="layer"><input type="checkbox" id="7ca10cfd-795a-40dc-b019-9bdbbfcdda90"><label for="7ca10cfd-795a-40dc-b019-9bdbbfcdda90">DWD RADOLAN</label></li><li class="layer"><input type="checkbox" id="5ee012e7-4a8c-4064-b089-d0f4e85dcff0"><label for="5ee012e7-4a8c-4064-b089-d0f4e85dcff0">PL AWACS Orbits</label></li><li class="layer"><input type="checkbox" id="7e65f750-f7ba-451e-ad8f-22e446f33218"><label for="7e65f750-f7ba-451e-ad8f-22e446f33218">NL AWACS Orbits</label></li><li class="layer"><input type="checkbox" id="369f838f-c208-4781-ac1b-03cbd873d873"><label for="369f838f-c208-4781-ac1b-03cbd873d873">DE AWACS Orbits</label></li><li class="layer"><input type="checkbox" id="484f6593-ffb9-4d48-b89e-0cdaf15a820e"><label for="484f6593-ffb9-4d48-b89e-0cdaf15a820e">UK Radar Corridors</label></li><li class="layer"><input type="checkbox" id="df780096-af1c-46e6-bc9e-d12558427af2"><label for="df780096-af1c-46e6-bc9e-d12558427af2">UK A2A Refueling</label></li><li class="layer"><input type="checkbox" id="d0dd5999-11ba-4fdd-82c7-9c95a66c2359"><label for="d0dd5999-11ba-4fdd-82c7-9c95a66c2359">UK AWACS Orbits</label></li></ul></li><li class="group"><label>Custom</label><ul></ul></li></ul></div></div></div>
+        <div id="iconTestCanvas" style="background-color:#D2D2D2;display:none;">
+        </div>
+
+        <div id="settings_infoblock">
+          <div id="settings_close" class="settingsCloseBox" style="filter: invert(100%);"></div>
+          <div class="settingsOptionContainer">
+            <div class="settingsText">Text and Icon size:</div>
+          </div>
+          <div style="display: block; width: 100%;" id="userScaleSlider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 20%;"></span></div>
+          <div class="settingsOptionContainer">
+            <div class="settingsText">Icon size multiplier:</div>
+          </div>
+          <div style="display: block; width: 100%;" id="iconScaleSlider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 31.0345%;"></span></div>
+          <div class="rSpacer">
+            <hr>
+          </div>
+          <div id="settingsLeft" class="settingsColumn">
+            <div class="settingsOptionContainer">
+              <label for="units_selector"><span class="infoBlockTitleText">Units:&nbsp;&nbsp;</span></label>
+              <select name="units_selector" id="units_selector">
+                <option value="nautical">Aeronautical</option>
+                <option value="metric">Metric</option>
+                <option value="imperial">Imperial</option>
+              </select>
+            </div>
+            <div class="settingsOptionContainer">
+              <div class="settingsCheckbox settingsCheckboxChecked" id="groundvehicle_filter"></div>
+              <div class="settingsText">Ground Vehicles</div>
+            </div>
+            <div class="settingsOptionContainer">
+              <div class="settingsCheckbox settingsCheckboxChecked" id="blockedmlat_filter"></div>
+              <div class="settingsText">Non-ICAO Targets (radar track / airframe unknown) </div>
+            </div>
+          <div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="lastLeg_cb"></div><div class="settingsText">Last Leg only</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="labelsGeom_cb"></div><div class="settingsText">Labels: geom. alt. (WGS84)</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="geomUseEGM_cb"></div><div class="settingsText">Geom. alt.: WGS84 -&gt; EGM conversion (long load)</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="baroUseQNH_cb"></div><div class="settingsText">Baro. alt.: correct for QNH</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="utcTimesLive_cb"></div><div class="settingsText">Live track labels: UTC</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="utcTimesHistoric_cb"></div><div class="settingsText">Historic track labels: UTC</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="windLabelsSlim_cb"></div><div class="settingsText">Smaller wind labels</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="showLabelUnits_cb"></div><div class="settingsText">Label units</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="darkerColors_cb"></div><div class="settingsText">Darker Colors</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="darkMode_cb"></div><div class="settingsText">Dark Mode</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="MapDim_cb"></div><div class="settingsText">Dim Map</div></div></div>
+          <div id="settingsRight" class="settingsColumn">
+            <div class="settingsOptionContainer">
+              <button class="formButton" onclick="resetSettings();">Reset All Settings</button>
+            </div>
+          <div class="settingsOptionContainer"><div class="settingsCheckbox" id="shareFilters_cb"></div><div class="settingsText">Include Filters In URLs</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="debugTracks_cb"></div><div class="settingsText">Debug Tracks</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="debugAll_cb"></div><div class="settingsText">Debug show all</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="updateLocation_cb"></div><div class="settingsText">Update GPS location</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="autoselect_cb"></div><div class="settingsText">Auto-select plane</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="ColoredPlanes_cb"></div><div class="settingsText">Colored Planes</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="ColoredTrails_cb"></div><div class="settingsText">Colored Trails</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="planespottingAPI_cb"></div><div class="settingsText">Pictures planespotting.be</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="planespottersAPI_cb"></div><div class="settingsText">Pictures planespotters.net</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="useRouteAPI_cb"></div><div class="settingsText">Lookup route</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="enableInfoblock_cb"></div><div class="settingsText">Enable Infoblock</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="wideInfoblock_cb"></div><div class="settingsText">Wide Infoblock</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="enableMouseover_cb"></div><div class="settingsText">Enable mouse-over block</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="altitudeChart_cb"></div><div class="settingsText">Altitude Chart</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="webgl_cb"></div><div class="settingsText">WebGL</div></div></div>
+        </div>
+        <div style="display: none" id="credits">
+          <span class="credits-image"></span>
+          <span class="credits-text">aggregator.com</span>
+        </div>
+        <div id="header_top" class="infoHeading">
+          <div class="buttonContainer">
+            <span id="U" title="only show the U2 and other military planes" class="button inActiveButton" onclick="toggleMilitary();"><span class="buttonText">U</span></span>
+            <span id="H" title="(H)ome / Reset Map" class="button inActiveButton" onclick="resetMap();"><span class="buttonText">H</span></span>
+            <span id="T" title="All (T)racks" class="button inActiveButton" onclick="selectAllPlanes();"><span class="buttonText">T</span></span>
+          </div>
+        </div>
+        <div id="header_side" class="infoHeading">
+          <div class="buttonContainer">
+            <div id="toggle_sidebar_control">
+              <button id="toggle_sidebar_button" class="sidebar_button hide_sidebar" title="Toggle Sidebar"></button>
+            </div>
+            <div id="expand_sidebar_control">
+              <button id="expand_sidebar_button" class="sidebar_button" title="Expand Sidebar" style=""></button>
+            </div>
+            <div id="fullscreenButton" class="svgButton fullscreenButton" style="display: none;"></div>
+            <div id="settingsCog" class="svgButton settingsCog"></div>
+            <div id="L" title="Toggle (L)abels" class="button inActiveButton" onclick="toggleLabels();"><span class="buttonText">L</span></div>
+            <div id="O" title="Toggle Label Extensi(O)ns" class="button inActiveButton" onclick="toggleExtendedLabels();"><span class="buttonText">O</span></div>
+            <div id="K" title="Toggle Trac(K) Labels" class="button inActiveButton" onclick="toggleTrackLabels();"><span class="buttonText">K</span></div>
+            <div class="buttonSpacer">
+            </div>
+            <div style="display: none" id="B" title="Toggle Map (B)rightness" class="button activeButton" onclick="toggles['MapDim'].toggle();"><span class="buttonText">B</span></div>
+            <div class="buttonSpacer">
+            </div>
+            <div style="display: none" id="V" title="Table: only show aircraft in current (V)iew" class="button activeButton" onclick="toggleTableInView();"><span class="buttonText">V</span></div>
+            <div id="M" title="Toggle (M)ultiSelect" class="button inActiveButton" onclick="toggleMultiSelect();"><span class="buttonText">M</span></div>
+            <div class="buttonSpacer">
+            </div>
+            <div id="P" title="(P)ersistence mode" class="button inActiveButton" onclick="togglePersistence();"><span class="buttonText">P</span></div>
+            <div id="I" title="(I)solate: only show selected aircraft" class="button inActiveButton" onclick="toggleIsolation();"><span class="buttonText">I</span></div>
+            <div class="buttonSpacer">
+            </div>
+            <div id="R" title="Follow a (R)andom plane!" class="button inActiveButton" onclick="followRandomPlane();"><span class="buttonText">R</span></div>
+            <div id="F" title="(F)ollow" class="button inActiveButton" onclick="toggleFollow();"><span class="buttonText">F</span></div>
+          <!--< div id="RP" title="Replay" class="button inActiveButton" onclick="showReplayBar();"><span class="buttonText">RP</span></div>-->
+          </div>
+        </div>
+        <div id="altitude_chart" class="ol-unselectable ol-control altitudeFeet">
+          <button id="altitude_chart_button" style="background-image: url(&quot;data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIxMC42IDAgODk2LjIgMjguMzkiPgogIDxkZWZzPgogICAgPHN0eWxlPi5jbHMtMXtmaWxsOnVybCgjbGluZWFyLWdyYWRpZW50KTt9LmNscy0ye2ZpbGw6bm9uZTtzdHJva2U6IzAwMDtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9PC9zdHlsZT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50IiB4MT0iNzcuODkiIHkxPSI2LjU4IiB4Mj0iOTA2LjI4IiB5Mj0iNi41OCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMC4wMzMiIHN0b3AtY29sb3I9ImhzbCgyMy4xMjUsODglLDUxLjA0MTY2NjY2NjY2NjY2NCUpIi8+PHN0b3Agb2Zmc2V0PSIwLjA2NiIgc3RvcC1jb2xvcj0iaHNsKDI2LjI1LDg4JSw1Mi4wODMzMzMzMzMzMzMzMzYlKSIvPjxzdG9wIG9mZnNldD0iMC4xMjYiIHN0b3AtY29sb3I9ImhzbCgzMi41LDg4JSw1My44NzUlKSIvPjxzdG9wIG9mZnNldD0iMC4xOSIgc3RvcC1jb2xvcj0iaHNsKDQzLDg4JSw1MS41JSkiLz48c3RvcCBvZmZzZXQ9IjAuMjUzIiBzdG9wLWNvbG9yPSJoc2woNTQsODglLDQ0LjglKSIvPjxzdG9wIG9mZnNldD0iMC4zMTYiIHN0b3AtY29sb3I9ImhzbCg3Miw4OCUsNDEuOCUpIi8+PHN0b3Agb2Zmc2V0PSIwLjM4IiBzdG9wLWNvbG9yPSJoc2woMTEyLjUsODglLDQxJSkiLz48c3RvcCBvZmZzZXQ9IjAuNTkiIHN0b3AtY29sb3I9ImhzbCgxODkuNjU1MTcyNDEzNzkzMSw4OCUsNDMuODYyMDY4OTY1NTE3MjQ2JSkiLz48c3RvcCBvZmZzZXQ9IjAuNzkiIHN0b3AtY29sb3I9ImhzbCgyNDQuODI3NTg2MjA2ODk2NTcsODglLDU3LjAzNDQ4Mjc1ODYyMDY4JSkiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9ImhzbCgzMDAsODglLDQzJSkiLz48L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8dGl0bGU+QWx0aXR1ZGUgTGVnZW5kIChmdCk8L3RpdGxlPgogIDxnIGlkPSJMYXllcl8yIiBkYXRhLW5hbWU9IkxheWVyIDIiPgogICAgPGcgaWQ9IlJFREVTSUdOIj4KICAgICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI3Ny44OSIgd2lkdGg9IjgyOC40IiBoZWlnaHQ9IjEzLjE3Ii8+CiAgICAgIDxwb2x5bGluZSBjbGFzcz0iY2xzLTIiIHBvaW50cz0iNzggMCA3OCAxMy40IDkwNi4yOCAxMy40IDkwNi4yOCAwIi8+CiAgICAgIDxwYXRoIGQ9Ik03NS41MywyMi4zNmMwLTEuODcuMTMtNC4zNywyLjQyLTQuMzZzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTNzUuNTMsMjQuMzcsNzUuNTMsMjIuMzZaTTc4LDI1Ljg2YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU4LTEuMzcsMS43LTEuMzcsMy41N1M3Ni42NiwyNS44Niw3OCwyNS44NloiLz4KICAgICAgPHBhdGggZD0iTTg3MC44MywxOC4xM2gxVjIzLjdoMXYuODZoLTF2Mi4wNWgtMVYyNC41N2gtMy4wN3YtLjk1Wm0tMi4xNiw1LjU4aDIuMTZWMTkuNzhoMFoiLz4KICAgICAgPHBhdGggZD0iTTg3My42MiwyMi40OWMwLTEuODcuMTMtNC4zNywyLjQyLTQuMzdzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTODczLjYyLDI0LjUxLDg3My42MiwyMi40OVpNODc2LDI2YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1M4NzQuNzUsMjYsODc2LDI2WiIvPgogICAgICA8cGF0aCBkPSJNODgyLjI2LDIyLjQ5YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zN3MyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVM4ODIuMjYsMjQuNTEsODgyLjI2LDIyLjQ5Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3Uzg4My4zOSwyNiw4ODQuNjgsMjZaIi8+CiAgICAgIDxwYXRoIGQ9Ik04ODgsMjIuNDljMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5Uzg4OCwyNC41MSw4ODgsMjIuNDlabTIuNDIsMy41YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1M4ODkuMTUsMjYsODkwLjQ0LDI2WiIvPgogICAgICA8cGF0aCBkPSJNODkzLjc4LDIyLjQ5YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zN3MyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVM4OTMuNzgsMjQuNTEsODkzLjc4LDIyLjQ5Wk04OTYuMiwyNmMxLjMsMCwxLjM3LTEuNzEsMS4zNy0zLjVzLS4wNy0zLjU3LTEuMzctMy41Ny0xLjM3LDEuNy0xLjM3LDMuNTdTODk0LjkxLDI2LDg5Ni4yLDI2WiIvPgogICAgICA8cGF0aCBkPSJNOTAyLjI5LDIyLjc4NTc3MmgtMi42NHYtMC43OWgyLjY0di0yLjY2aDAuNzl2Mi42NGgyLjY0djAuODFoLTIuNjR2Mi42NGgtMC43OVoiLz4KICAgICAgPGxpbmUgY2xhc3M9ImNscy0yIiB4MT0iNzIwLjk1IiB4Mj0iNzIwLjk1IiB5Mj0iMTQuMTkiLz4KICAgICAgPHBhdGggZD0iTTcwNy4yNywyMS44M2guNTNjLjksMCwxLjI5LS42NSwxLjI5LTEuNXMtLjI5LTEuNDItMS4xLTEuNDJjLTEuMTIsMC0xLjIyLDEtMS4yMiwxLjY2aC0xLjA2YzAtMS40NS42OC0yLjQ1LDIuMjUtMi40NWEyLDIsMCwwLDEsMi4xOCwyLjIxLDEuNzUsMS43NSwwLDAsMS0xLjMyLDEuODJ2MGExLjgxLDEuODEsMCwwLDEsMS41NywyYzAsMS41NS0uNzgsMi42My0yLjQxLDIuNjNhMi4yNiwyLjI2LDAsMCwxLTIuNDEtMi4zNnYtLjExaDEuMDZjMCwuNzguMzgsMS42OCwxLjM2LDEuNjguNjIsMCwxLjM1LS4zMSwxLjM1LTEuNzVhMS40MiwxLjQyLDAsMCwwLTEuNTQtMS42MmgtLjU0WiIvPgogICAgICA8cGF0aCBkPSJNNzExLjMzLDIyLjQ5YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zN3MyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVM3MTEuMzMsMjQuNTEsNzExLjMzLDIyLjQ5Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzcxMi40NiwyNiw3MTMuNzUsMjZaIi8+CiAgICAgIDxwYXRoIGQ9Ik03MjAsMjIuNDljMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzcyMCwyNC41MSw3MjAsMjIuNDlabTIuNDIsMy41YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3UzcyMSwyMC42Miw3MjEsMjIuNDksNzIxLjA5LDI2LDcyMi4zOSwyNloiLz4KICAgICAgPHBhdGggZD0iTTcyNS43MywyMi40OWMwLTEuODcuMTMtNC4zNywyLjQyLTQuMzdzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTNzI1LjczLDI0LjUxLDcyNS43MywyMi40OVptMi40MiwzLjVjMS4yOSwwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1M3MjYuODYsMjYsNzI4LjE1LDI2WiIvPgogICAgICA8cGF0aCBkPSJNNzMxLjQ5LDIyLjQ5YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zN3MyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVM3MzEuNDksMjQuNTEsNzMxLjQ5LDIyLjQ5Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzczMi42MiwyNiw3MzMuOTEsMjZaIi8+CiAgICAgIDxsaW5lIGNsYXNzPSJjbHMtMiIgeDE9IjU1MS4xMiIgeDI9IjU1MS4xMiIgeTI9IjE0LjE5Ii8+CiAgICAgIDxwYXRoIGQ9Ik01NDAuNTMsMjYuNjJoLTQuNzVhNC41Myw0LjUzLDAsMCwxLDEuODMtMy40OGwuNy0uNTlhMi41MSwyLjUxLDAsMCwwLDEuMTMtMmMwLS43My0uMzItMS41Mi0xLjI0LTEuNTItMS4zMSwwLTEuMzQsMS4zNi0xLjM0LDEuODNoLTEuMDZjMC0xLjYxLjY3LTIuNywyLjQxLTIuN2EyLjExLDIuMTEsMCwwLDEsMi4yOCwyLjI3QTMuMzUsMy4zNSwwLDAsMSw1MzksMjMuMTlsLTEuMiwxYTIuNjQsMi42NCwwLDAsMC0uOTIsMS40NWgzLjY1WiIvPgogICAgICA8cGF0aCBkPSJNNTQxLjQ5LDIyLjQ5YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zN3MyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVM1NDEuNDksMjQuNTEsNTQxLjQ5LDIyLjQ5Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzU0Mi42MiwyNiw1NDMuOTIsMjZaIi8+CiAgICAgIDxwYXRoIGQ9Ik01NTAuMTMsMjIuNDljMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3UzU1NSwyMC40LDU1NSwyMi40OWMwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTNTUwLjEzLDI0LjUxLDU1MC4xMywyMi40OVptMi40MiwzLjVjMS4zLDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzU1MS4yNiwyNiw1NTIuNTYsMjZaIi8+CiAgICAgIDxwYXRoIGQ9Ik01NTUuODksMjIuNDljMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzU1NS44OSwyNC41MSw1NTUuODksMjIuNDlabTIuNDIsMy41YzEuMjksMCwxLjM3LTEuNzEsMS4zNy0zLjVzLS4wNy0zLjU3LTEuMzctMy41Ny0xLjM3LDEuNy0xLjM3LDMuNTdTNTU3LDI2LDU1OC4zMiwyNloiLz4KICAgICAgPHBhdGggZD0iTTU2MS42NSwyMi40OWMwLTEuODcuMTMtNC4zNywyLjQyLTQuMzdzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTNTYxLjY1LDI0LjUxLDU2MS42NSwyMi40OVptMi40MiwzLjVjMS4yOSwwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1M1NjIuNzgsMjYsNTY0LjA4LDI2WiIvPgogICAgICA8bGluZSBjbGFzcz0iY2xzLTIiIHgxPSI0MjYuNTMiIHgyPSI0MjYuNTMiIHkyPSIxNC4xOSIvPgogICAgICA8cGF0aCBkPSJNNDExLjM1LDE5LjQ4YzEuMDctLjA2LDIuMDUtLjE5LDIuMS0xLjM5aC43MnY4LjQ5aC0xVjIwLjJoLTEuODFaIi8+CiAgICAgIDxwYXRoIGQ9Ik00MTYuNzYsMjIuNDZjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM2czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzQxNi43NiwyNC40OCw0MTYuNzYsMjIuNDZabTIuNDIsMy41YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1M0MTcuODksMjYsNDE5LjE4LDI2WiIvPgogICAgICA8cGF0aCBkPSJNNDI1LjQsMjIuNDZjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM2czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzQyNS40LDI0LjQ4LDQyNS40LDIyLjQ2Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzQyNi41MywyNiw0MjcuODIsMjZaIi8+CiAgICAgIDxwYXRoIGQ9Ik00MzEuMTYsMjIuNDdjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3UzQzNiwyMC4zOCw0MzYsMjIuNDdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzQzMS4xNiwyNC40OCw0MzEuMTYsMjIuNDdabTIuNDIsMy41YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU4LTEuMzcsMS43LTEuMzcsMy41N1M0MzIuMjksMjYsNDMzLjU4LDI2WiIvPgogICAgICA8cGF0aCBkPSJNNDM2LjkyLDIyLjQ3YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zNnMyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVM0MzYuOTIsMjQuNDgsNDM2LjkyLDIyLjQ3Wm0yLjQyLDMuNWMxLjMsMCwxLjM3LTEuNzEsMS4zNy0zLjVzLS4wNy0zLjU3LTEuMzctMy41OFM0MzgsMjAuNiw0MzgsMjIuNDcsNDM4LDI2LDQzOS4zNCwyNloiLz4KICAgICAgPGxpbmUgY2xhc3M9ImNscy0yIiB4MT0iMzY5Ljc2IiB4Mj0iMzY5Ljc2IiB5Mj0iMTQuMTkiLz4KICAgICAgPHBhdGggZD0iTTM1OC4zNSwyMi4wNWExLjc2LDEuNzYsMCwwLDEtMS4yMy0xLjgxLDIuMTcsMi4xNywwLDAsMSw0LjM0LDAsMS43NiwxLjc2LDAsMCwxLTEuMjQsMS44MSwyLDIsMCwwLDEsMS41LDIuMTgsMi40NCwyLjQ0LDAsMSwxLTQuODcsMEEyLDIsMCwwLDEsMzU4LjM1LDIyLjA1Wm0uOTMsMy45YzEsMCwxLjM4LS43NSwxLjM4LTEuNzVzLS40LTEuNzUtMS4zOC0xLjc1LTEuMzguNzUtMS4zOCwxLjc1UzM1OC4zLDI1Ljk1LDM1OS4yOSwyNS45NVptLTEuMTEtNS42OWMwLC43OS4zMywxLjM5LDEuMTIsMS4zOXMxLjEyLS42LDEuMTItMS4zOS0uMzUtMS4zOS0xLjEyLTEuMzlTMzU4LjE3LDE5LjQ2LDM1OC4xNywyMC4yNloiLz4KICAgICAgPHBhdGggZD0iTTM2NS41LDIyLjQ1YzAtMS44Ny4xMy00LjM2LDIuNDItNC4zNnMyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVMzNjUuNSwyNC40NiwzNjUuNSwyMi40NVptMi40MiwzLjVjMS4zLDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTgtMS4zNywxLjctMS4zNywzLjU3UzM2Ni42MywyNiwzNjcuOTMsMjZaIi8+CiAgICAgIDxwYXRoIGQ9Ik0zNzEuMjYsMjIuNDVjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM2czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzM3MS4yNiwyNC40NiwzNzEuMjYsMjIuNDVabTIuNDIsMy41YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1MzNzIuMzksMjYsMzczLjY5LDI2WiIvPgogICAgICA8cGF0aCBkPSJNMzc3LDIyLjQ1YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zNnMyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVMzNzcsMjQuNDcsMzc3LDIyLjQ1Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzM3OC4xNSwyNiwzNzkuNDUsMjZaIi8+CiAgICAgIDxsaW5lIGNsYXNzPSJjbHMtMiIgeDE9IjMxMS40MSIgeDI9IjMxMS40MSIgeTI9IjE0LjE5Ii8+CiAgICAgIDxwYXRoIGQ9Ik0zMDIuNTEsMjAuMWExLjExLDEuMTEsMCwwLDAtMS4xMi0xLjI1Yy0xLjQyLDAtMS41LDIuMTEtMS41LDIuNTV2LjY3aDBhMS44NSwxLjg1LDAsMCwxLDEuNjItLjk1YzEuNDgsMCwyLjIyLDEuMDksMi4yMiwyLjY5cy0uODIsMi45LTIuNCwyLjljLTIuMzUsMC0yLjUyLTIuMjctMi41Mi00LDAtMS45NC4xMi00LjYzLDIuNTgtNC42M2EyLDIsMCwwLDEsMi4xNSwyWm0tMS4xNSw1LjgzYzEuMDYsMCwxLjM0LTEuMDgsMS4zNC0ycy0uMjItMi0xLjM0LTJTMzAwLDIzLjA4LDMwMCwyNCwzMDAuMywyNS45MywzMDEuMzYsMjUuOTNaIi8+CiAgICAgIDxwYXRoIGQ9Ik0zMDcuNTIsMjIuNDNjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzMwNy41MiwyNC40NSwzMDcuNTIsMjIuNDNabTIuNDIsMy41YzEuMjksMCwxLjM3LTEuNzEsMS4zNy0zLjVzLS4wNy0zLjU3LTEuMzctMy41OC0xLjM3LDEuNy0xLjM3LDMuNTdTMzA4LjY0LDI1LjkzLDMwOS45NCwyNS45M1oiLz4KICAgICAgPHBhdGggZD0iTTMxMy4yOCwyMi40M2MwLTEuODcuMTMtNC4zNywyLjQyLTQuMzZzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTMzEzLjI4LDI0LjQ1LDMxMy4yOCwyMi40M1ptMi40MiwzLjVjMS4yOSwwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU4LTEuMzcsMS43LTEuMzcsMy41N1MzMTQuNCwyNS45NCwzMTUuNywyNS45NFoiLz4KICAgICAgPHBhdGggZD0iTTMxOSwyMi40NGMwLTEuODcuMTMtNC4zNywyLjQyLTQuMzZzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTMzE5LDI0LjQ1LDMxOSwyMi40NFptMi40MiwzLjVjMS4zLDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzMyMC4xNiwyNS45NCwzMjEuNDYsMjUuOTRaIi8+CiAgICAgIDxsaW5lIGNsYXNzPSJjbHMtMiIgeDE9IjI1My4wNiIgeDI9IjI1My4wNiIgeTI9IjE0LjE5Ii8+CiAgICAgIDxwYXRoIGQ9Ik0yNDIuMjgsMTguMDVoMXY1LjU4aDF2Ljg2aC0xdjIuMDVoLTFWMjQuNDloLTMuMDd2LS45NVptLTIuMTYsNS41OGgyLjE2VjE5LjcxaDBaIi8+CiAgICAgIDxwYXRoIGQ9Ik0yNDcuOTUsMjIuNDJjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM2czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzI0Ny45NSwyNC40MywyNDcuOTUsMjIuNDJabTIuNDIsMy41YzEuMjksMCwxLjM3LTEuNzEsMS4zNy0zLjVzLS4wNy0zLjU4LTEuMzctMy41OFMyNDksMjAuNTUsMjQ5LDIyLjQyLDI0OS4wNywyNS45MiwyNTAuMzcsMjUuOTJaIi8+CiAgICAgIDxwYXRoIGQ9Ik0yNTMuNzEsMjIuNDJjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM2czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzI1My43MSwyNC40MywyNTMuNzEsMjIuNDJabTIuNDIsMy41YzEuMjksMCwxLjM3LTEuNzEsMS4zNy0zLjVzLS4wNy0zLjU3LTEuMzctMy41Ny0xLjM3LDEuNy0xLjM3LDMuNTdTMjU0LjgzLDI1LjkyLDI1Ni4xMywyNS45MloiLz4KICAgICAgPHBhdGggZD0iTTI1OS40NywyMi40MmMwLTEuODcuMTMtNC4zNywyLjQyLTQuMzZzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTMjU5LjQ3LDI0LjQzLDI1OS40NywyMi40MlptMi40MiwzLjVjMS4zLDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzI2MC41OSwyNS45MiwyNjEuODksMjUuOTJaIi8+CiAgICAgIDxsaW5lIGNsYXNzPSJjbHMtMiIgeDE9IjE5NC43IiB4Mj0iMTk0LjciIHkyPSIxNC4xOSIvPgogICAgICA8cGF0aCBkPSJNMTg2LjEyLDI2LjUzaC00Ljc1QTQuNTMsNC41MywwLDAsMSwxODMuMiwyM2wuNy0uNTlhMi41MSwyLjUxLDAsMCwwLDEuMTMtMmMwLS43My0uMzItMS41Mi0xLjI0LTEuNTItMS4zMSwwLTEuMzQsMS4zNS0xLjM0LDEuODNoLTEuMDZjMC0xLjYxLjY3LTIuNywyLjQxLTIuN2EyLjExLDIuMTEsMCwwLDEsMi4yOCwyLjI3LDMuMzUsMy4zNSwwLDAsMS0xLjQ5LDIuNzlsLTEuMiwxYTIuNjQsMi42NCwwLDAsMC0uOTIsMS40NWgzLjY1WiIvPgogICAgICA8cGF0aCBkPSJNMTkwLDIyLjRjMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzE5MCwyNC40MiwxOTAsMjIuNFptMi40MiwzLjVjMS4yOSwwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU4UzE5MSwyMC41MywxOTEsMjIuNCwxOTEuMDgsMjUuOSwxOTIuMzgsMjUuOVoiLz4KICAgICAgPHBhdGggZD0iTTE5NS43MiwyMi40YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zNnMyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVMxOTUuNzIsMjQuNDIsMTk1LjcyLDIyLjRabTIuNDIsMy41YzEuMjksMCwxLjM3LTEuNzEsMS4zNy0zLjVzLS4wNy0zLjU3LTEuMzctMy41Ny0xLjM3LDEuNy0xLjM3LDMuNTdTMTk2Ljg0LDI1LjkxLDE5OC4xNCwyNS45MVoiLz4KICAgICAgPHBhdGggZD0iTTIwMS40OCwyMi40YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zNnMyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVMyMDEuNDgsMjQuNDIsMjAxLjQ4LDIyLjRabTIuNDIsMy41YzEuMywwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1MyMDIuNjEsMjUuOTEsMjAzLjksMjUuOTFaIi8+CiAgICAgIDxsaW5lIGNsYXNzPSJjbHMtMiIgeDE9IjEzNi4zNSIgeDI9IjEzNi4zNSIgeTI9IjE0LjE5Ii8+CiAgICAgIDxwYXRoIGQ9Ik0xMjMuNjgsMTkuNDFjMS4wNy0uMDYsMi4wNS0uMTksMi4xLTEuMzloLjcydjguNDloLTFWMjAuMTNoLTEuODFaIi8+CiAgICAgIDxwYXRoIGQ9Ik0xMzIsMjIuMzljMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM3czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzEzMiwyNC40LDEzMiwyMi4zOVptMi40MiwzLjVjMS4yOSwwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU4UzEzMywyMC41MSwxMzMsMjIuMzksMTMzLjA5LDI1Ljg5LDEzNC4zOSwyNS44OVoiLz4KICAgICAgPHBhdGggZD0iTTEzNy43MywyMi4zOWMwLTEuODcuMTMtNC4zNiwyLjQyLTQuMzZzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTMTM3LjczLDI0LjQsMTM3LjczLDIyLjM5Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTgtMS4zNywxLjctMS4zNywzLjU3UzEzOC44NSwyNS44OSwxNDAuMTUsMjUuODlaIi8+CiAgICAgIDxwYXRoIGQ9Ik0xNDMuNDksMjIuMzljMC0xLjg3LjEzLTQuMzcsMi40Mi00LjM2czIuNDIsMi4yOCwyLjQyLDQuMzdjMCwxLjgtLjEzLDQuMjktMi40Miw0LjI5UzE0My40OSwyNC40LDE0My40OSwyMi4zOVptMi40MiwzLjVjMS4zLDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzE0NC42MiwyNS44OSwxNDUuOTEsMjUuODlaIi8+CiAgICAgIDxsaW5lIGNsYXNzPSJjbHMtMiIgeDE9IjEwNi4zOSIgeDI9IjEwNi4zOSIgeTI9IjE0LjE5Ii8+CiAgICAgIDxwYXRoIGQ9Ik05OC41NiwxOC4xN2gzLjc5di45NGgtM0w5OSwyMS41N2wwLDBhMS45MiwxLjkyLDAsMCwxLDEuNDktLjY0YzEuMjcsMCwyLjEzLDEsMi4xMywyLjgsMCwxLjU4LS43LDIuOTEtMi40NywyLjkxYTIuMjEsMi4yMSwwLDAsMS0yLjMzLTIuMzVoMS4wNmMwLC40NC4xNywxLjU2LDEuMjksMS41NnMxLjM5LTEuMzQsMS4zOS0yLjIxLS4zNS0xLjkyLTEuNDItMS45MmExLjI2LDEuMjYsMCwwLDAtMS4yLjgzbC0uOTEsMFoiLz4KICAgICAgPHBhdGggZD0iTTEwMy42MSwyMi4zN2MwLTEuODcuMTMtNC4zNywyLjQyLTQuMzZzMi40MiwyLjI4LDIuNDIsNC4zN2MwLDEuOC0uMTMsNC4yOS0yLjQyLDQuMjlTMTAzLjYxLDI0LjM5LDEwMy42MSwyMi4zN1ptMi40MiwzLjVjMS4yOSwwLDEuMzctMS43MSwxLjM3LTMuNXMtLjA3LTMuNTctMS4zNy0zLjU3LTEuMzcsMS43LTEuMzcsMy41N1MxMDQuNzMsMjUuODcsMTA2LDI1Ljg3WiIvPgogICAgICA8cGF0aCBkPSJNMTA5LjM3LDIyLjM3YzAtMS44Ny4xMy00LjM3LDIuNDItNC4zNnMyLjQyLDIuMjgsMi40Miw0LjM3YzAsMS44LS4xMyw0LjI5LTIuNDIsNC4yOVMxMDkuMzcsMjQuMzksMTA5LjM3LDIyLjM3Wm0yLjQyLDMuNWMxLjI5LDAsMS4zNy0xLjcxLDEuMzctMy41cy0uMDctMy41Ny0xLjM3LTMuNTctMS4zNywxLjctMS4zNywzLjU3UzExMC40OSwyNS44OCwxMTEuNzksMjUuODhaIi8+CiAgICAgIDxwYXRoIGQ9Ik0xMy4wMjkzMjksMy40OGgxLjc1bDIuMjUsOC41MmgtMS40NGwtMC41MywtMi4xaC0yLjQ3bC0wLjU3LDIuMWgtMS40M3ptMS44Miw1LjM3LC0xLC00LjIydjBsLTEsNC4yMloiLz4KICAgICAgPHBhdGggZD0iTTE3LjQ3OTMyOSwzLjQ4aDEuMzd2Ny40MWgzLjMxVjEyaC00LjY4WiIvPgogICAgICA8cGF0aCBkPSJNMjMuMjY5MzI5LDQuNjNoLTJWMy40OGg1LjMydjEuMTVoLTJWMTJoLTEuMzNaIi8+CiAgICAgIDxwYXRoIGQ9Ik0yNy4zNTkzMjksMy40OGgxLjM3VjEyaC0xLjM3WiIvPgogICAgICA8cGF0aCBkPSJNMzEuNDg5MzI5LDQuNjNoLTJWMy40OGg1LjQxdjEuMTVoLTJWMTJoLTEuNDJaIi8+CiAgICAgIDxwYXRoIGQ9Ik0zNi44OTkzMjksMy40OHY2LjE0YzAsMS4wOCwwLjQzLDEuNTYsMS4yNiwxLjU2LDAuODMsMCwxLjI1LC0wLjQ4LDEuMjUsLTEuNTZWMy40OGgxLjM3djZjMCwyLC0xLDIuNywtMi42MiwyLjcsLTEuNjIsMCwtMi42MywtMC43MiwtMi42MywtMi43di02WiIvPgogICAgICA8cGF0aCBkPSJNNDIuMDc5MzI5LDMuNDhoMi40M2MyLjY5LDAsMywxLjc1LDMsNC4yOCwwLDIuNTMsLTAuMzQsNC4yOCwtMyw0LjI4aC0yLjQzem0xLjM3LDcuNTJoMS4xNGMxLjEzLDAsMS41OSwtMC43NCwxLjYsLTMuMjUsMC4wMSwtMi41MSwtMC40MywtMy4yMywtMS42LC0zLjIzaC0xLjE0WiIvPgogICAgICA8cGF0aCBkPSJNNDguNzU5MzI5LDMuNDloNC42M3YxLjE1aC0zLjI3VjdoMy4wN3YxLjE3aC0zLjA3djIuNzNoMy4zNnYxLjE1aC00LjczWiIvPgogICAgICA8cGF0aCBkPSJNNTkuODA5MzI5LDMuNDlhMTAuMTIsMTAuMTIsMCwwLDAsLTEuMzcsNS4zOCwxMC40NCwxMC40NCwwLDAsMCwxLjM3LDUuMzloLTAuOTJhOS4xNSw5LjE1LDAsMCwxLDAsLTEwLjc3WiIvPgogICAgICA8cGF0aCBkPSJNNjAuODI5MzI5LDYuNTZoLTAuOXYtMWgwLjlWNWMwLC0xLjIyLDAuNTksLTEuNjEsMS42NCwtMS42MWE1LjU4LDUuNTgsMCwwLDEsMC43MSwwdjFoLTAuMzZjLTAuNDgsMCwtMC43LDAuMTgsLTAuNywwLjYxdjAuNmgxLjA2djFoLTEuMDZ2NS40OWgtMS4zWiIvPgogICAgICA8cGF0aCBkPSJNNjMuNzEsNS42MWguODlWMy43N0g2NS45VjUuNjFINjd2MUg2NS44OXYzLjg1YzAsLjUuMTQuNjguNTkuNjhhMi41MSwyLjUxLDAsMCwwLC40NywwdjFhNC4yNyw0LjI3LDAsMCwxLTEsLjExYy0uODgsMC0xLjMxLS4yNC0xLjMxLTEuNTZ2LTRoLS44OVoiLz4KICAgICAgPHBhdGggZD0iTTY3LDE0LjI3YTEwLjEyLDEwLjEyLDAsMCwwLDEuMzctNS4zOUExMC40MiwxMC40MiwwLDAsMCw2NywzLjVoLjkyYTkuMTYsOS4xNiwwLDAsMSwwLDEwLjc3WiIvPgogICAgPC9nPgogIDwvZz4KPC9zdmc+&quot;);"></button>
+        </div>
+        <div id="replayBar" style="left: 0px;">
+          <button id="replayPlay">Play</button>
+          <p id="replayDateHint">Date:</p>
+          <p id="replayDateHintLocal"></p>
+          <input type="text" class="datepicker" id="replayDatepicker">
+          <p id="replayTimeHint">Time:</p>
+          <p id="hourSelect"></p>
+          <p id="minuteSelect"></p>
+          <p id="replayTimeZone">UTC Date:</p>
+          <p id="replaySpeedHint">Speed:</p>
+          <p id="replaySpeedSelect"></p>
+          <p id="replayLoading"></p>
+          <p></p>
+        </div> <!-- replayBar -->
+
+      </div> <!-- map_container-->
+
+      <div id="sidebar_container" style="height: 100%; width: 25%;" class="ui-resizable">
+        <div id="splitter" class="ui-resizable-handle ui-resizable-w" style=""></div>
+        <div id="sidebar_canvas">
+
+          <div id="sidebar-table">
+            <table style="width: 100%">
+              <tbody><tr>
+                <td>
+                  <button id="shrink_sidebar_button" class="shrink_sidebar hidden sidebar_button" title="Show Map"></button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img src="images/opensky-logo.png" style="width: 100%; height: auto;">
+                </td>
+              </tr>
+              <tr style="display: table-row;">
+                <td style="text-align: center">
+                  <div>
+                    <span class="extraLargeText">OpenSky Flight Map<br></span>
+                    <div class="rSpacer"></div>
+                    <div class="rSpacer"></div>
+                    <span class="largeText">Main Site:<br><a class="largeText" target="_blank" href="https://opensky-network.org/">opensky-network.org</a></span>
+                    <div class="rSpacer"></div>
+                    <div class="rSpacer"></div>
+                    <div class="rSpacer"></div>
+                    <div class="rSpacer"></div>
+                  </div>
+                  <div>
+                    <span class="largeText navLinks">
+                      <a class="largeText" target="_blank" href="https://opensky-network.org/contribute/become-a-feeder">Feed Data</a>
+                      <a class="largeText" target="_blank" href="https://discord.gg/RPh89jpVVz">Discord</a>
+                      <a class="largeText" target="_blank" href="https://opensky-network.org/about/faq">FAQ</a>
+                    </span>
+                  </div>
+                  <div class="rSpacer">
+                  </div>
+                </td>
+              </tr>
+              <tr id="aggregator_header" class="infoblock_row hidden">
+                <td style="text-align: center">
+                  <div>
+                    <span class="largeText">Improve Coverage:<br><a class="largeText" target="_blank" href="https://aggregator.com/how-to-feed/">aggregator.com</a></span>
+                  </div>
+                  <div class="rSpacer"></div>
+                  <div class="rSpacer"></div>
+                  <div class="rSpacer"></div>
+                  <div>
+                    <span class="largeText">
+                      <a class="largeText" target="_blank" href="https://aggregator.com/faq/">FAQ</a>
+                        
+                      <a class="largeText" target="_blank" href="https://aggregator.com/map-help/">Map Help</a>
+                    </span>
+                  </div>
+                  <div class="rSpacer">
+                  </div>
+                </td>
+              </tr>
+              <tr id="imageConfigHeader" class="infoblock_row hidden">
+                <td style="text-align: center">
+                  <div>
+                    <span class="largeText"><a id="imageConfigLink" class="largeText" target="_blank" href="/">ADSB Feeder Image Config</a></span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="infoblock_heading">
+                <td style="text-align: right" class="link">
+                  <a href="https://github.com/wiedehopf/tar1090#tar1090" id="tar1090_version" target="_blank">tar1090 on github</a>
+                </td>
+              </tr>
+              <tr class="rSpacer">
+                <td></td>
+              </tr>
+              <tr id="mp3player" class="hidden">
+                <td style="text-align: center">
+                  <audio id="mp3player_audio" crossorigin="anonymous" preload="none" src="place_holder" type="audio/mp3" controls="controls" autoplay="false"></audio>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <table style="width: 100%">
+                    <tbody><tr class="infoblock_heading">
+                      <td style="width: 50%"><span class="infoBlockTitleText">Total Aircraft:</span> <span id="dump1090_total_ac">9556</span></td>
+                    </tr>
+                    <tr class="infoblock_body">
+                      <td style="width: 50%"><span id="with_positions" class="infoBlockTitleText">On Screen:</span> <span id="dump1090_total_ac_positions">1</span></td>
+                    </tr>
+                  </tbody></table>
+                  <table style="width: 100%" id="infoblock_altimeter" class="hidden">
+                    <tbody><tr>
+                      <td>
+                        <form id="altimeter_form">
+                          <span class="infoBlockTitleText">Altimeter:</span>
+                          <span> <input id="altimeter_input" type="number" step="0.01" value="29.92" class="searchInput"></span>
+                          <span> <button class="formButton" type="submit">Set</button></span>
+                          <span> <button class="formButton" type="button" id="altimeter_set_standard">Standard</button>
+                        
+                      </span></form></td>
+                    </tr>
+                  </tbody></table>
+                </td>
+              </tr>
+            </tbody></table>
+
+            <!-- ABOVE_TABS_ANCHOR -->
+
+            <div id="tabs" style="min-height: 10px; overflow: auto" class="ui-tabs ui-corner-all ui-widget ui-widget-content ui-tabs-collapsible">
+              <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                <li role="tab" tabindex="0" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" aria-controls="tab-search" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#tab-search" tabindex="-1" class="ui-tabs-anchor" id="ui-id-1">Search</a></li>
+                <li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab" aria-controls="tab-filters" aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#tab-filters" tabindex="-1" class="ui-tabs-anchor" id="ui-id-2">Filters</a></li>
+                <li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab" aria-controls="tab-columns" aria-labelledby="ui-id-3" aria-selected="false" aria-expanded="false"><a href="#tab-columns" tabindex="-1" class="ui-tabs-anchor" id="ui-id-3">Columns</a></li>
+              </ul>
+              <div id="tab-search" aria-labelledby="ui-id-1" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+                <table id="tab-search-table" cellpadding="0" cellspacing="0">
+                  <tbody><tr>
+                    <td>
+                      <form id="search_form">
+                        <div class="infoBlockTitleText">Search:</div>
+                        <input id="search_input" name="searchBox" type="text" class="searchInput" maxlength="128" title="Searches on the hex ID, callsign, registration, and type.">
+                        <button class="formButton" type="submit">Search</button>
+                        <button class="formButton" type="button" id="search_clear_button">Clear Search</button>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <form id="jump_form">
+                        <div class="infoBlockTitleText">Jump to Airport or Latitude, Longitude:</div>
+                        <input id="jump_input" name="jumpBox" type="text" class="searchInput" maxlength="128" title="Search by airport code like KATL, ZBAA, or LAX">
+                        <button class="formButton" type="submit">Jump</button>
+                        <button class="formButton" type="button" id="jump_clear_button">Clear</button>
+                      </form>
+                    </td>
+                  </tr>
+                </tbody></table>
+                <div class="warning" id="search_warning" style="display:none">
+                </div>
+              </div>
+              <div id="tab-filters" aria-labelledby="ui-id-2" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                <table cellpadding="0" cellspacing="0" id="filterTable">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <form id="altitude_filter_form">
+                          <div class="infoBlockTitleText">Filter by altitude:</div>
+                          <input id="altitude_filter_min" name="minAltitude" type="text" class="altitudeFilterInput" maxlength="6">
+                          <label for="altitude_filter_min" class="altitudeUnit">ft</label>
+                          <span> to </span>
+                          <input id="altitude_filter_max" name="maxAltitude" type="text" class="altitudeFilterInput" maxlength="6">
+                          <label for="altitude_filter_max" class="altitudeUnit">ft</label>
+                          <button class="formButton" type="submit">Filter</button>
+                          <button class="formButton" id="altitude_filter_reset_button">Reset</button>
+                        </form>
+                      </td>
+                    </tr>
+                  <tr><td><form id="filters_callsign"><div class="infoBlockTitleText">Filter by callsign:</div><input id="filters_callsign_input" name="filters_callsign_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_callsign_reset">Reset</button></form></td></tr><tr><td><form id="filters_squawk"><div class="infoBlockTitleText">Filter by squawk:</div><input id="filters_squawk_input" name="filters_squawk_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_squawk_reset">Reset</button></form></td></tr><tr><td><form id="filters_type"><div class="infoBlockTitleText">Filter by type code:</div><input id="filters_type_input" name="filters_type_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_type_reset">Reset</button></form></td></tr><tr><td><form id="filters_description"><div class="infoBlockTitleText">Filter by type description:</div><input id="filters_description_input" name="filters_description_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_description_reset">Reset</button></form></td></tr><tr><td><form id="filters_icao"><div class="infoBlockTitleText">Filter by ICAO hex id:</div><input id="filters_icao_input" name="filters_icao_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_icao_reset">Reset</button></form></td></tr></tbody>
+                </table>
+                <table style="width: 100%" cellpadding="0" cellspacing="0" id="filterTable2">
+                  <tbody>
+
+                    <tr>
+                      <td>
+                        <form id="source_filter_form">
+                          <div class="infoBlockTitleText">Filter by source:</div>
+                          <table>
+                            <tbody><tr><td>
+                              <ol id="sourceFilter" class="buttonFilter ui-selectable"><li class="ui-widget-content ui-selectee" style="background-color:rgb(42, 83, 99);" id="source-filter-adsb">ADS-B</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(41, 95, 62);" id="source-filter-uat">UAT / ADS-R</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(96, 87, 46);" id="source-filter-mlat">MLAT</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(99, 42, 63);" id="source-filter-tisb">TIS-B</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(42, 42, 99);" id="source-filter-modeS">Mode-S</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(66, 66, 66);" id="source-filter-other">Other</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(41, 95, 62);" id="source-filter-adsc">ADS-C</li></ol>
+                            </td></tr>
+                            <tr><td>
+                              <button class="formButton" type="submit">Filter</button>
+                              <button class="formButton" id="source_filter_reset_button">Reset</button>
+                            </td></tr>
+                          </tbody></table>
+                        </form>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <form id="flag_filter_form">
+                          <div class="infoBlockTitleText">Filter by DB flags:</div>
+                          <table>
+                            <tbody><tr><td>
+                              <ol id="flagFilter" class="buttonFilter ui-selectable"><li class="ui-widget-content ui-selectee" style="background-color:rgb(99, 42, 63);" id="flag-filter-military">Military</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(41, 95, 62);" id="flag-filter-pia">PIA</li><li class="ui-widget-content ui-selectee" style="background-color:rgb(42, 83, 99);" id="flag-filter-ladd">LADD</li></ol>
+                            </td></tr>
+                            <tr><td>
+                              <button class="formButton" type="submit">Filter</button>
+                              <button class="formButton" id="flag_filter_reset_button">Reset</button>
+                            </td></tr>
+                          </tbody></table>
+                        </form>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table cellpadding="0" cellspacing="0" id="filterTable3">
+                  <tbody>
+                  <tr><td><form id="filters_registration"><div class="infoBlockTitleText">Filter by registration:</div><input id="filters_registration_input" name="filters_registration_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_registration_reset">Reset</button></form></td></tr><tr><td><form id="filters_country"><div class="infoBlockTitleText">Filter by country of registration:</div><input id="filters_country_input" name="filters_country_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_country_reset">Reset</button></form></td></tr><tr><td><form id="filters_category"><div class="infoBlockTitleText">Filter by category (A3,B0,..):</div><input id="filters_category_input" name="filters_category_name" type="text" class="searchInput" maxlength="1024"><button class="formButton" type="submit">Filter</button><button class="formButton" id="filters_category_reset">Reset</button></form></td></tr></tbody>
+                </table>
+              </div>
+              <div id="tab-columns" aria-labelledby="ui-id-3" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                <ul id="sortableColumns" class="ui-sortable"><li class="ui-state-default" id="dd_icao"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_icao_cb"></div><div class="settingsText">Hex ID</div></div></li><li class="ui-state-default" id="dd_country"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_country_cb"></div><div class="settingsText">Flag</div></div></li><li class="ui-state-default" id="dd_flight"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_flight_cb"></div><div class="settingsText">Callsign</div></div></li><li class="ui-state-default" id="dd_route"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_route_cb"></div><div class="settingsText">Route</div></div></li><li class="ui-state-default" id="dd_registration"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_registration_cb"></div><div class="settingsText">Registration</div></div></li><li class="ui-state-default" id="dd_type"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_type_cb"></div><div class="settingsText">Type</div></div></li><li class="ui-state-default" id="dd_squawk"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_squawk_cb"></div><div class="settingsText">Squawk</div></div></li><li class="ui-state-default" id="dd_altitude"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_altitude_cb"></div><div class="settingsText">Altitude</div></div></li><li class="ui-state-default" id="dd_speed"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_speed_cb"></div><div class="settingsText">Speed</div></div></li><li class="ui-state-default" id="dd_vert_rate"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_vert_rate_cb"></div><div class="settingsText">Vertical Rate</div></div></li><li class="ui-state-default" id="dd_sitedist"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_sitedist_cb"></div><div class="settingsText">Distance</div></div></li><li class="ui-state-default" id="dd_track"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_track_cb"></div><div class="settingsText">Track</div></div></li><li class="ui-state-default" id="dd_msgs"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_msgs_cb"></div><div class="settingsText">Messages</div></div></li><li class="ui-state-default" id="dd_seen"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_seen_cb"></div><div class="settingsText">Seen</div></div></li><li class="ui-state-default" id="dd_rssi"><div class="settingsOptionContainer"><div class="settingsCheckbox settingsCheckboxChecked" id="column_rssi_cb"></div><div class="settingsText">RSSI</div></div></li><li class="ui-state-default" id="dd_lat"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_lat_cb"></div><div class="settingsText">Latitude</div></div></li><li class="ui-state-default" id="dd_lon"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_lon_cb"></div><div class="settingsText">Longitude</div></div></li><li class="ui-state-default" id="dd_data_source"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_data_source_cb"></div><div class="settingsText">Source</div></div></li><li class="ui-state-default" id="dd_military"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_military_cb"></div><div class="settingsText">Mil.</div></div></li><li class="ui-state-default" id="dd_wd"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_wd_cb"></div><div class="settingsText">Wind D.</div></div></li><li class="ui-state-default" id="dd_ws"><div class="settingsOptionContainer"><div class="settingsCheckbox" id="column_ws_cb"></div><div class="settingsText">Wind S.</div></div></li></ul>
+              </div>
+            </div>
+
+            <table id="planesTable" style="width: 100%"><thead class="aircraft_table_header">  <tr><td id="country" onclick="TAR.planeMan.cols.country.sort();" style="width: 18px; padding: 3px;"></td><td id="flight" onclick="TAR.planeMan.cols.flight.sort();">Callsign</td><td id="route" onclick="TAR.planeMan.cols.route.sort();">Route</td><td id="type" onclick="TAR.planeMan.cols.type.sort();">Type</td><td id="squawk" onclick="TAR.planeMan.cols.squawk.sort();">Squawk</td><td id="altitude" onclick="TAR.planeMan.cols.altitude.sort();">Alt.&nbsp;(ft)</td><td id="speed" onclick="TAR.planeMan.cols.speed.sort();">Spd.&nbsp;(kt)</td><td id="sitedist" onclick="TAR.planeMan.cols.sitedist.sort();">Dist.&nbsp;(nmi)</td><td id="rssi" onclick="TAR.planeMan.cols.rssi.sort();">RSSI</td>  </tr></thead><tbody><tr id="4bb268" style="background-color: rgb(42, 83, 99);"><td><img width="18" height="12" style="display: block;margin: auto;" src="flags/3x2/TR.svg" title="Turkey"></td><td>THY5CR  </td><td></td><td></td><td style="text-align: right"></td><td style="text-align: right">30000</td><td style="text-align: right">408</td><td style="text-align: right">49.3</td><td style="text-align: right">-6.0</td></tr></tbody></table>
+
+            <div id="legend" class="legend"><div class="legendTitle" style="background-color:rgb(42, 83, 99);">ADS-B</div><div class="legendTitle" style="background-color:rgb(41, 95, 62);">ADS-C/R / UAT</div><div class="legendTitle" style="background-color:rgb(96, 87, 46);">MLAT</div><br><div class="legendTitle" style="background-color:rgb(99, 42, 63);">TIS-B</div><div class="legendTitle" style="background-color:rgb(66, 66, 66);">Other</div></div>
+
+            <!-- BELOW_LEGEND_ANCHOR -->
+          <div class="settingsOptionContainer"><div class="settingsCheckbox" id="moreTableLines1_cb"></div><div class="settingsText">More Table Lines</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="moreTableLines2_cb"></div><div class="settingsText">Even More Table Lines</div></div><div class="settingsOptionContainer"><div class="settingsCheckbox" id="allTableLines_cb"></div><div class="settingsText">All Table Lines</div></div></div>
+
+        </div> <!-- sidebar_canvas -->
+
+      </div> <!-- sidebar_container -->
+
+    </div> <!-- layout_container -->
+
+    <div id="update_error" class="hidden error_box">
+      Problem fetching data from the server:<br>
+      <span id="update_error_detail"></span>
+    </div>
+
+    <div id="timers_paused" class="hidden error_box" style="display: none;">
+      <span id="timers_paused_detail"></span>
+    </div>
+
+    <div id="generic_error" class="hidden error_box">
+      <span id="generic_error_detail"></span><br>
+    </div>
+
+    <div id="inaccurate_warning" class="identSmall hidden inaccurate_warning"></div>
+    <div id="js_error" class="hidden"></div>
+    <div id="container_splitter"></div>
+
+    <script>let databaseFolder = "db-3.14.1679";</script>
+    <!-- JS_ANCHOR1 -->
+    <script src="libs/jquery-3.6.1.min.js"></script>
+    <script src="libs/elm-pep-01.js"></script>
+    <script src="libs/jquery-ui-1.13.2.min.js"></script>
+    <script src="libs/jquery.ui.touch-punch-1.0.8.js"></script>
+    <script src="libs/zstddec-tar1090-0.0.5.js"></script>
+
+    <!-- ol-custom bundling created using https://github.com/wiedehopf/ol-rollup-->
+    <script src="libs/ol-custom025.js"></script>
+
+    <!-- JS_ANCHOR2 -->
+    <script src="early_0e78a393968e26c2f1957e3fb5b073a7.js"></script>
+
+    <script src="defaults_aa56a279f39485ef39ac3c1a83147551.js"></script>
+    <script src="config.js"></script>
+    <script src="dbloader_ab2f2b5a4c7676187e06f19e03a89d0e.js"></script>
+    <script src="registrations_11eeb2a2bc6f857c00cc650f716f0dce.js"></script>
+    <script src="formatter_6a81670bdcd802b97516ad4f31692a76.js"></script>
+    <script src="flags_f7cd6d83ee8fe9acd967ecd67d365e19.js"></script>
+    <script src="layers_b4a0277e6050090097a8e9c8d08104b5.js"></script>
+    <script src="geomag2020.js"></script>
+    <script src="markers_3a59829a3add12678bccdf611716d473.js"></script>
+
+    <!-- JS_ANCHOR3 -->
+    <script src="planeObject_e7bbf1a5a049c673e1e59cacca943014.js"></script>
+    <script src="script_a4a63f64a542050f5b6f4fc70085b5a9.js"></script><input hidden=""><div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
+
+    <link rel="preload" as="image" crossorigin="anonymous" href="images/sprites_f0c84e57a9cf2e424887b81bcd5b8a7f.png">
+
+  
+
+</body></html>

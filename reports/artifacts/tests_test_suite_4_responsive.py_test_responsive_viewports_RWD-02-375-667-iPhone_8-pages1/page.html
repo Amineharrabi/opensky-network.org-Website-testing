@@ -1,0 +1,357 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <!-- You can pass parameters from your templates to your main template and insert them -->
+    <title>OpenSky</title>
+            <script type="module" src="/static/bundle/main-4VGZS5YR.js"></script>
+      <link rel="stylesheet" href="/static/bundle/main-JHUVVWLL.css">
+ <!-- Automatically loads Bootstrap, JS or anyother imports in web/app/index.js-->
+<style>      .htmx-indicator{opacity:0}      .htmx-request .htmx-indicator{opacity:1; transition: opacity 200ms ease-in;}      .htmx-request.htmx-indicator{opacity:1; transition: opacity 200ms ease-in;}      </style></head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- FULL-WIDTH NAVBAR -->
+<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top py-3 px-4 px-md-5" data-controller="header">
+    <div class="container-fluid">
+        <!-- OSN Logo -->
+        <a href="/" class="navbar-brand" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Return to OpenSky Home" data-bs-original-title="Return to OpenSky Home">
+            <img src="/static/osky-logo-banner.png" alt="Your Logo" class="img-fluid" style="max-width: 250px; height: auto">
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Return to OpenSky Home">
+                    <a href="/" class="nav-link px-3 link-dark fw-bold">Home</a>
+                </li>
+
+                <!-- About Dropdown -->
+                <li class="nav-item dropdown" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Learn how to feed data to OpenSky">
+                    <a class="nav-link dropdown-toggle px-3 link-dark fw-bold" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Feed Data
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="feedDatadown">
+                        <li><a class="dropdown-item fw-bold" href="/feed">Feed Data</a></li>
+                        <li><a class="dropdown-item" href="/feed/raspberry">Raspberry Pi</a></li>
+                        <li><a class="dropdown-item" href="/feed/debian">Debian - GNU Linux</a></li>
+                        <li><a class="dropdown-item" href="/feed/docker">Docker</a></li>
+                        <li><a class="dropdown-item" href="/feed/radarcape">Radarcape</a></li>
+                        <li><a class="dropdown-item" href="/feed/flarm">FLARM</a></li>
+                        <li><a class="dropdown-item" href="/feed/vhf">VHF Voice Data</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Learn about the data we collect and provide">
+                    <a class="nav-link dropdown-toggle px-3 link-dark fw-bold" href="#" id="accessDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Our Data
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="feedDatadown">
+                        <li><a class="dropdown-item fw-bold" href="/data">Our Data</a></li>
+                        <li><a class="dropdown-item" href="/data/trino">Historical Database - Trino</a></li>
+                        <li><a class="dropdown-item" href="/data/api">OpenSky API</a></li>
+                        <li><a class="dropdown-item" href="/data/scientific">Scientific Datasets</a></li>
+                        <li><a class="dropdown-item" href="/data/tools">Data Tools</a></li>
+                        <li><a class="dropdown-item" href="/data/aircraft">Aircraft Database</a></li>
+                        <li><a class="dropdown-item" href="/data/alerts">Alerts</a></li>
+                        <li><a class="dropdown-item" href="/data/top-lists">Top Lists</a></li>
+                    </ul>
+                </li>
+
+                <!-- About Dropdown -->
+                <li class="nav-item dropdown" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Learn about OpenSky">
+                    <a class="nav-link dropdown-toggle px-3 link-dark fw-bold" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        About
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                        <li><a class="dropdown-item fw-bold" href="/about">About</a></li>
+                        <li><a class="dropdown-item" href="/about/faq">FAQ</a></li>
+                        <li><a class="dropdown-item" href="/about/network">Network Coverage</a></li>
+                        <li><a class="dropdown-item" href="/about/social-impact">Social Impact</a></li>
+                        <li><a class="dropdown-item" href="/about/terms-of-use">Terms Of Use</a></li>
+                        <li><a class="dropdown-item" href="/about/privacy-policy">Privacy Policy</a></li>
+                        <li><a target="_blank" class="dropdown-item" href="https://symposium.opensky-network.org/">OpenSky Symposium</a></li>
+                        <li><a class="dropdown-item" href="/about/publications">Publications</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item">
+                    <a target="_blank" href="https://map.opensky-network.org/" data-bs-toggle="tooltip" data-bs-placement="top" class="nav-link px-3 link-dark fw-bold" data-bs-original-title="View our Tar1090 Flight map">Flight Map</a>
+                </li>
+
+
+                <!-- MyOpenSky Dropdown -->
+
+
+                <!-- MyOpenSky Dropdown -->
+
+                <!-- Only visible on mobile d-md-none is what causes this-->
+                <li class="nav-item d-md-none text-center" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Join our Discord Server" data-bs-original-title="Join our Discord Server">
+                    <a href="https://discord.gg/RPh89jpVVz" target="_blank" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                            <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
+                        </svg>
+                    </a>
+                </li>
+
+                    <li class="nav-item d-md-none text-center">
+                        <a href="/login" class="btn btn-outline-dark fw-bold w-75" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Sign in or create an account">Sign in</a>
+                    </li>
+
+            </ul>
+        </div>
+
+        <!-- Right-side buttons (Only visible on larger screens) -->
+        <div class="d-none d-md-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Join our Discord Server">
+                <a href="https://discord.gg/RPh89jpVVz" target="_blank" class="me-3 text-dark" style="text-decoration: none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                    <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
+                </svg>
+            </a>
+                <a href="/login" class="btn btn-outline-dark me-2 fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Sign in or create an account">Sign in</a>
+        </div>
+    </div>
+</nav>
+ <!-- Reusable Header -->
+<main class="flex-grow-1">
+            <div class="container mt-5 mb-5">
+            <div class="container mt-5 mb-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="/feed">Feed Data</a></li>
+                        <li class="breadcrumb-item" aria-current="page">Raspberry Pi</li>
+                        <li class="breadcrumb-item"><a href="/feed/debian">Debian - GNU Linux</a></li>
+                        <li class="breadcrumb-item"><a href="/feed/docker">Docker</a></li>
+                        <li class="breadcrumb-item"><a href="/feed/radarcape">Radarcape</a></li>
+                        <li class="breadcrumb-item"><a href="/feed/flarm">FLARM</a></li>
+                        <li class="breadcrumb-item"><a href="/feed/vhf">VHF Voice Data</a></li>
+                    </ol>
+                </nav>
+            </div>
+
+            <h1 class="text-center text-secondary-emphasis mb-4">OpenSky Feeder for Dump1090 (Raspberry Pi-Based)</h1>
+
+            <p class="mt-4 mb-4 text-secondary-emphasis">This guide explains how to feed ADS-B data into the OpenSky
+                Network
+                using a Raspberry Pi. <b>Setup takes just five minutes.</b></p>
+
+            <p class="mt-4 mb-4 text-secondary-emphasis">The feeder daemon runs alongside Dump1090 and is available on.
+                <a target="_blank" href="https://github.com/openskynetwork/opensky-sensor">GitHub</a>.
+            </p>
+
+
+            <h2 class="text-center text-secondary-emphasis mb-4">Installation Options</h2>
+            <ol>
+                <li>The easiest option is to use the <a target="_blank" href="https://github.com/openskynetwork/receiver-kit">pre-configured
+                        Raspbian image</a> (no manual installation required). If you choose this option, you do
+                    <b>not</b> need
+                    to complete the <em>"Obtaining and Installing the OpenSky Feeder"</em> section. <span class="text-bg-warning ms-2">Note: Raspberry Pi 5 devices can be tricky with this image, though the feeder itself works fine.</span>
+
+                </li>
+                <br>
+                <li>Alternatively, you can install Dump1090 manually on Raspbian (we recommend using <a target="_blank" href="https://github.com/flightaware/dump1090">dump1090-fa</a>),
+                    then
+                    proceed to the <em>"Obtaining and Installing the OpenSky Feeder"</em> section.
+                </li>
+                <br>
+                <li>You may also use other Linux distributions, but we <b>officially support only Raspbian </b>&gt; While
+                    other Debian-based distributions may work, and you might be able to get the software running on
+                    non-Debian systems, there is no straightforward method to install the OpenSky feeder on them.
+                </li>
+                <br>
+                <li>If you already have Dump1090 running on any device in your network, you can install the OpenSky
+                    feeder on an x86, x86_64, armhf, or arm64 machine to relay data to the OpenSky Network.
+                </li>
+            </ol>
+            <h2 class="text-center text-secondary-emphasis mb-4 mt-4">Obtaining and Installing the OpenSky Feeder</h2>
+
+            <div class="alert alert-warning" role="alert">
+                <p class="mt-4 mb-4 text-secondary-emphasis"><strong>NOTE:</strong> This section assumes you are already feeding data to other services.</p>
+                <p class="mt-4 mb-4 text-secondary-emphasis">If not, you will need at minimum the following hardware:</p>
+
+                <ul>
+                    <li>Raspberry Pi</li>
+                    <li>RTL-SDR USB dongle and antenna</li>
+                </ul>
+
+                <p class="mt-4 mb-4 text-secondary-emphasis">For more information on building a Raspberry Pi feeder from scratch, see the detailed instructions on this <a target="_blank" href="https://github.com/openskynetwork/receiver-kit">page</a>.</p>
+
+            </div>
+
+            <h4 class="text-left text-secondary-emphasis mb-4 mt-4">Quick Install (.deb package)</h4>
+            <pre class="bg-light p-3">wget https://opensky-network.org/files/firmware/opensky-feeder_latest_armhf.deb
+sudo dpkg -i opensky-feeder_latest_armhf.deb</pre>
+            <p class="text-secondary-emphasis">Follow the setup prompts to configure your receiver and OpenSky
+                account.</p>
+
+            <h4 class="text-left text-secondary-emphasis mb-4 mt-4">Alternative: Install via APT Repository</h4>
+            <pre class="bg-light p-3">sudo apt-get install apt-transport-https ca-certificates
+sudo wget -O /etc/apt/trusted.gpg.d/opensky.gpg https://opensky-network.org/files/firmware/opensky.gpg.pub
+sudo bash -c "echo deb https://opensky-network.org/repos/debian opensky custom &gt; /etc/apt/sources.list.d/opensky.list"
+sudo apt-get update
+sudo apt-get install opensky-feeder</pre>
+
+
+            <h2 id="manageFeeder" class="text-center text-secondary-emphasis mb-4 mt-4">Managing the Feeder</h2>
+            <p class="text-secondary-emphasis">To update manually:</p>
+            <pre class="bg-light p-3">sudo dpkg -i opensky-feeder_latest_armhf.deb</pre>
+            <p class="text-secondary-emphasis">To reconfigure settings:</p>
+            <pre class="bg-light p-3">sudo dpkg-reconfigure opensky-feeder</pre>
+            <p class="text-secondary-emphasis">Restart after an upgrade issue:</p>
+            <pre class="bg-light p-3">sudo systemctl restart opensky-feeder</pre>
+
+            <h2 class="text-center text-secondary-emphasis mb-4 mt-4">Troubleshooting &amp; Logs</h2>
+            <p class="text-secondary-emphasis">Check logs if the feeder isn't working:</p>
+            <pre class="bg-light p-3">sudo journalctl -b 0 -u opensky-feeder</pre>
+
+            <h2 class="text-center text-secondary-emphasis mb-4 mt-4">Removing the Feeder</h2>
+            <p class="text-secondary-emphasis">To disable temporarily:</p>
+            <pre class="bg-light p-3">sudo systemctl disable opensky-feeder
+sudo systemctl stop opensky-feeder</pre>
+            <p class="text-secondary-emphasis">To uninstall but keep config:</p>
+            <pre class="bg-light p-3">sudo apt-get remove opensky-feeder</pre>
+            <p class="text-secondary-emphasis">To remove with configuration:</p>
+            <pre class="bg-light p-3">sudo apt-get --purge remove opensky-feeder</pre>
+
+            <h2 class="text-center text-secondary-emphasis mb-4 mt-4">Running dump1090 on another system?</h2>
+
+            <p class="mt-4 mb-4 text-secondary-emphasis">If you are using a different system, <a href="/feed/debian">check this guide</a> for installation options on other
+                architectures.</p>
+
+            <p class="mb-4 mt-4 text-secondary-emphasis"><strong>Changelog</strong></p>
+
+            <ul>
+                <li><strong>Release 2.1.7-1 from 23.07.2018</strong>
+                    <ul>
+                        <li>Support for hptoa branch of dump1090, see <a href="https://github.com/openskynetwork/dump1090-hptoa" target="_blank">GitHub</a>
+                        </li>
+                        <li>SHA256Sum (armhf): 76924b152ac836faac8ef79348180ee5e0a3d2b9068b7c1e57fa21a35e9dbff0</li>
+                        <li>SHA256Sum (arm64): 71bb878e1f74be967b863979d64f56369b0fae6aa0094eb1a020d7c94d31458e</li>
+                        <li>SHA256Sum (amd64): a3af0884277b2b10d306401861fb454e9af14cef680d47749992aa36be9de5de</li>
+                        <li>SHA256Sum (i386): a432faf050c936af791b4e0a857552983fa14982d9ae4ff08e524ff997f7821e</li>
+                    </ul>
+                </li>
+                <li><strong>Release 2.1.6-1 from 22.02.2018</strong>
+                    <ul>
+                        <li>Introduced the OpenSky Kit</li>
+                        <li>2.1.4-3 and 2.1.5-1 are still up to date for other receivers</li>
+                    </ul>
+                </li>
+                <li><strong>Release 2.1.4-3 from 30.11.2017</strong>
+                    <ul>
+                        <li>Compiled armhf version under Raspbian again to support Raspberry Pi 1</li>
+                        <li>SHA256Sum (armhf): a2b57a64040b714b6573caef502da6c1fcd1ba92fbdd4e3a21b8f3a702eeac5b</li>
+                        <li>2.1.4-2 is still up to date for other architectures</li>
+                    </ul>
+                </li>
+                <li><strong>Release 2.1.4-2 from 20.11.2017</strong>
+                    <ul>
+                        <li>Changed information text in debconf</li>
+                        <li>SHA256Sum (armhf): 25b7c005973e716c89c806d95401f7d8743c4424b39dff49eb6b62a5991e6a47</li>
+                        <li>SHA256Sum (arm64): cacd1c177ca4141f020db32785d49905b72d37f7d641302c2ec6a41254d93085</li>
+                        <li>SHA256Sum (amd64): 61d4adf691ae8404ba61d084e1f1de4fd24569d364d4b18e3c10c5b7dff59a34</li>
+                        <li>SHA256Sum (i386): f3c90c53f9cdbc5989de07a0d01d25ea50b30d209096c4e85d940549c5619b14</li>
+                    </ul>
+                </li>
+                <li><strong>Release 2.1.4 from 19.11.2017</strong>
+                    <ul>
+                        <li>Let users change their serial number using debconf</li>
+                        <li>Fixed auxiliary configuration path</li>
+                        <li>Print serial number in signed form</li>
+                        <li>SHA256Sum (armhf): 62bd5eae0426d97cf9d862ff655e52c4ba8e668ec5345e0fbdfbc7816d18b848</li>
+                        <li>SHA256Sum (arm64): 20825172eceab707a722e5d813342f39324671f3a7a028a075f257bf3adc2016</li>
+                        <li>SHA256Sum (amd64): 62572a3d6744bd6d3930d14bd23d305de9dd4ee05ddcc268a429dc1b43bace2c</li>
+                        <li>SHA256Sum (i386): 717096b802b1f8480a2fa4e3e740c041c4a670835cad548d4dc2d7ef9fa7638e</li>
+                    </ul>
+                </li>
+                <li><strong>Release 2.1.3 from 27.08.2017</strong>
+                    <ul>
+                        <li>Added features for donated sensors (no need to update for others)</li>
+                        <li>MD5Sum: e91be0d53784ce6dad41dedb08b4f13e</li>
+                        <li>MD5Sum (i386): f4772517780563d6f082377b7c1a21b0</li>
+                        <li>MD5Sum (amd64): 380dac24e27b93f113fbd5388ee2f367</li>
+                        <li>MD5Sum (arm64): 5cc2fbe2bca07ca0bcebc1be8ba284c5</li>
+                    </ul>
+                </li>
+                <li><strong>Release 2.1.2 from 21.05.2017</strong>
+                    <ul>
+                        <li>Reintroduced serial number override</li>
+                        <li>Fixed build system issues</li>
+                        <li>MD5Sum: fb680636df54f7713f8cc7a4e0e44997</li>
+                        <li>MD5Sum (i386): 10f4b79e67dadf4be33ea01d225df5f9</li>
+                        <li>MD5Sum (amd64): 27a9e54c4dee09f45ea7ff3f6460760a</li>
+                    </ul>
+                </li>
+                <li><strong>Release 2.0.1 from 08.03.2017</strong>
+                    <ul>
+                        <li>Fixed range checks for latitude/longitude</li>
+                        <li>MD5Sum: 812898d8ede1dbcb677c3d7811fa2d83</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+ <!-- Dynamic page content eg add index.html-->
+</main>
+    <!-- Footer -->
+<footer class="footer bg-dark text-white py-4" data-controller="footer">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <!-- Logo -->
+            <div class="col-md-3 text-center text-md-start" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Return to OpenSky Home" data-bs-original-title="Return to OpenSky Home">
+                <a href="/" class="d-inline-flex text-decoration-none">
+                    <img src="/static/osky-logo-banner.png" alt="OpenSky Logo" class="img-fluid" style="max-width: 250px; height: auto">
+                </a>
+            </div>
+
+            <!-- Footer Navigation -->
+            <ul class="nav col-12 col-md-auto justify-content-center">
+                <li>
+                    <a href="/" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Return to OpenSky Home">Home</a>
+                </li>
+                <li>
+                    <a href="/feed" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Learn how to feed data to OpenSky">Feed Data</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Learn about the data we collect and provide">Our Data</a>
+                </li>
+                <li>
+                    <a href="/about" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Learn about OpenSky">About</a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://map.opensky-network.org/" class="nav-link px-2 text-white fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="View our Tar1090 Flight map">Flight Map</a>
+                </li>
+            </ul>
+
+            <!-- Social Icons & Login (Desktop) -->
+            <div class="col-md-3 d-flex align-items-center justify-content-end d-none d-md-flex">
+                <a href="https://discord.gg/RPh89jpVVz" target="_blank" class="me-4 text-white" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Join our Discord Server" data-bs-original-title="Join our Discord Server">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                        <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
+                    </svg>
+                </a>
+
+                    <a href="/login" class="btn btn-outline-light me-2 fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Sign in or create an account">Sign in</a>
+            </div>
+
+            <!-- Social Icons & Login (Mobile) -->
+            <div class="col-12 text-center mt-4 d-md-none">
+                <a target="_blank" href="https://discord.gg/RPh89jpVVz" class="text-white d-block mb-2" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Join our Discord Server" data-bs-original-title="Join our Discord Server">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                        <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"></path>
+                    </svg>
+                </a>
+
+                    <a href="/login" class="btn btn-outline-light me-2 fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Sign in or create an account">Sign in</a>
+            </div>
+        </div>
+    </div>
+</footer>
+ <!-- Reusable Footer -->
+
+
+</body></html>

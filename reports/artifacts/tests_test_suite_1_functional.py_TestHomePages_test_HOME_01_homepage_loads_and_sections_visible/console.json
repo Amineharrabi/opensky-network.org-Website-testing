@@ -1,0 +1,14 @@
+[
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2001:16 \"22:08:17 clear timers\"",
+    "source": "console-api",
+    "timestamp": 1766092097992
+  },
+  {
+    "level": "INFO",
+    "message": "https://map.opensky-network.org/script_a4a63f64a542050f5b6f4fc70085b5a9.js 2024:12 \"22:08:17 set timers \"",
+    "source": "console-api",
+    "timestamp": 1766092097992
+  }
+]

@@ -17,8 +17,9 @@ class Config:
     INVALID_USERNAME = "invaliduser"
     
     # Performance thresholds (seconds)
-    MAP_LOAD_THRESHOLD = 30.0  # Realistic for live external site
-    API_RESPONSE_THRESHOLD = 5.0
+    # Made stricter to catch regressions during local QA runs
+    MAP_LOAD_THRESHOLD = 2.0  # stricter threshold (seconds)
+    API_RESPONSE_THRESHOLD = 1.0
     
     # Responsive resolutions
     RESOLUTIONS = {
